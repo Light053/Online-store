@@ -1,0 +1,8 @@
+@import 'variables/global.scss';
+@import "themes//default.scss";
+
+.App {
+	max-width: 1200px;
+	min-height: 100vh;
+	margin: 0 auto
+}

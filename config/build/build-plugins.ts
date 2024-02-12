@@ -6,7 +6,6 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import { BuildOptions } from "./types/types";
 
-
 export default function buildPlugins({ paths, isDev }: BuildOptions): webpack.WebpackPluginInstance[] {
 
 	const plugins = [
@@ -14,7 +13,7 @@ export default function buildPlugins({ paths, isDev }: BuildOptions): webpack.We
 			template: paths.html,
 			title: isDev ? 'Hot Module Replacement' : '',
 		}),
-		new ProgressPlugin(),
+		...(isDev ? [new ProgressPlugin()] : []),
 		new MiniCssExtractPlugin({
 			filename: 'css/[name].[contenthash:8].css',
 			chunkFilename: 'css/[name].[contenthash:8].css',
@@ -23,11 +22,11 @@ export default function buildPlugins({ paths, isDev }: BuildOptions): webpack.We
 			__IS__DEV: JSON.stringify(isDev)
 		}),
 		...(isDev ? [new ReactRefreshWebpackPlugin()] : []),
-
 	];
+
 	if (isDev) {
 		plugins.push(new BundleAnalyzerPlugin())
 	}
 
-	return plugins
+	return plugins;
 }
