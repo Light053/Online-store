@@ -1,8 +1,10 @@
-@import 'variables/global.scss';
-@import "themes//default.scss";
+@import "reset";
+@import "variables/global";
+@import "themes/default";
 
 .App {
-	max-width: 1200px;
 	min-height: 100vh;
-	margin: 0 auto
+	margin: 0 auto;
+	background-color: var(--bg-color);
+	color: var(--primary-color);
 }

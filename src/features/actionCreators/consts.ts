@@ -1,0 +1,1 @@
+export const SET_AUTH_STATUS = 'user/SET_AUTH_STATUS';

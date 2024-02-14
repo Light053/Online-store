@@ -1,7 +1,10 @@
 import { FC } from "react"
 import './styles/reset.scss'
 import './styles/index.scss'
-import { Navbar } from "widgets/Navbar/Navbar"
+import { NavBar } from "widgets/NavBar/index"
+import { AppRouter } from "./providers/router"
+
+
 
 interface AppProps {
 	className?: string
@@ -10,8 +13,11 @@ interface AppProps {
 export const App: FC<AppProps> = ({ className }) => {
 
 	return (
-		<div className="App">
-			<Navbar />
+		<div className="App light">
+			<NavBar />
+			<div className="content-page">
+				<AppRouter />
+			</div>
 		</div>
 	)
 }
