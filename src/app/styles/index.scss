@@ -1,10 +1,20 @@
 @import "reset";
 @import "variables/global";
 @import "themes/default";
+@import "themes/light";
 
 .App {
 	min-height: 100vh;
 	margin: 0 auto;
 	background-color: var(--bg-color);
 	color: var(--primary-color);
+	overflow: hidden;
+}
+
+.content-page {
+	display: flex;
+}
+
+.page-wrapper {
+	flex-grow: 1;
 }

@@ -6,9 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { NavLink } from "react-router-dom";
 import { RouterPath } from "shared/config/route-config/route-config";
 import { Button } from "react-bootstrap";
-import { useSelector } from "react-redux";
 import { StateSchema } from "app/providers/store-providers/config/state-schema";
-import { getIsAuth } from "entities/user/model/selectors/getIsAuth";
 import { connect } from "react-redux";
 import { setAuths } from "features/actionCreators/actions";
 
@@ -24,8 +22,8 @@ const NavBar: FC<NavBarProps> = ({ isAuth, setIsAuth }) => {
 
 
 	return (
-		<Navbar bg="dark" data-bs-theme="dark" className={styles.Navbar}>
-			<Container>
+		<Navbar className={styles.Navbar}>
+			<Container >
 				<NavLink className={styles.brand} to={RouterPath.main}>BuyDevice</NavLink>
 				{isAuth ?
 					<Nav className="ml-auto">
@@ -39,7 +37,9 @@ const NavBar: FC<NavBarProps> = ({ isAuth, setIsAuth }) => {
 						<Button
 							className={styles.link}
 							variant={"outline-light"}
-							onClick={() => setIsAuth(!isAuth)}>
+							onClick={() => setIsAuth(!isAuth)}
+
+						>
 							Exit
 						</Button>
 					</Nav>

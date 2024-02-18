@@ -13,7 +13,7 @@ interface AppProps {
 export const App: FC<AppProps> = ({ className }) => {
 
 	return (
-		<div className="App light">
+		<div className="App dark">
 			<NavBar />
 			<div className="content-page">
 				<AppRouter />
