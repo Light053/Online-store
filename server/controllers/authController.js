@@ -5,7 +5,7 @@ const { validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
 const { secret } = require('../config');
 const UserService = require('../service/UserService');
-const UserDto = require('../dtos/UserDto')
+
 
 
 class AuthController {
@@ -45,17 +45,16 @@ class AuthController {
 
 			res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
 
-			// Создаем экземпляр UserDto с помощью new
-			const userDto = new UserDto(userData.user);
+			console.log('user data:', userData.user);
 
-			// Возвращаем объект userDto вместе с токенами
-			return res.json({ userDto, ...userData });
+			return res.json(userData);
+
 		} catch (error) {
 			console.log(error.message);
 			return res.status(400).json(error.message);
 		}
-	}
 
+	}
 
 	async logout(req, res, next) {
 		try {

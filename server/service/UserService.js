@@ -20,13 +20,14 @@ class UserService {
 			const userDto = new UserDto(user);
 
 			const token = TokenService.generateToken({ ...userDto });
-			TokenService.saveToken(userDto.id, token.refreshToken);
+
+			await TokenService.saveToken(userDto.id, token.refreshToken);
 
 			console.log('user dto:', userDto);
 
 			return {
 				...token,
-				user: UserDto,
+				user: userDto,
 			};
 		} catch (error) {
 			throw new Error(error);

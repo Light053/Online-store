@@ -6,7 +6,6 @@ const authRouter = require('./router/authRouter')
 require('dotenv').config({ path: '.env' });
 const URI = require('./db-uri');
 const PORT = process.env.PORT || 5000;
-const URL_DB = process.env.URL_DB
 
 const app = express();
 
