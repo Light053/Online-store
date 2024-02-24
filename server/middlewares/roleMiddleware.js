@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { secret } = require("../config");
+const ApiError = require("../exceptions/ApiError");
 
 module.exports = function (roles) {
 	return function (req, res, next) {
@@ -8,31 +8,36 @@ module.exports = function (roles) {
 		}
 
 		try {
-
 			const token = req.headers.authorization.split(' ')[1];
 
 			if (!token) {
-				return res.status(400).json({ message: 'Неверный токен!' })
+				throw ApiError.badRequest('Токен отсутствует!');
 			}
 
-			const { roles: userRoles } = jwt.verify(token, secret)
-
-			let hasRole = false;
-
-			userRoles.forEach(el => {
-				if (roles.includes(el)) {
-					hasRole = true
+			jwt.verify(token, process.env.ACCES_SECRET_KEY, (error, decodedToken) => {
+				if (error) {
+					throw ApiError.badRequest('Ошибка проверки токена!');
 				}
+
+				const { roles: userRoles } = decodedToken.username;
+
+				let hasRole = false;
+
+				userRoles.forEach(el => {
+					if (roles.includes(el)) {
+						hasRole = true;
+					}
+				});
+
+				if (!hasRole) {
+					throw ApiError.badRequest('У вас нет доступа!');
+				}
+
+				next();
 			});
 
-			if (!hasRole) {
-				return res.status(400).json({ message: 'У вас нет доступа!' })
-			}
-
-			next()
 		} catch (error) {
-			console.log(error);
-			return res.status(400).json({ message: 'Пользователь не авторизован!' })
+			next(error);
 		}
-	}
-}
+	};
+};

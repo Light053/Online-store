@@ -2,20 +2,20 @@ const User = require('../models/User')
 const Role = require('../models/Role')
 const bcrypt = require('bcrypt');
 const TokenService = require('../service/TokenService')
-const UserDto = require('../dtos/UserDto')
+const UserDto = require('../dtos/UserDto');
+const ApiError = require('../exceptions/ApiError');
 
 class UserService {
-
 	async registration(username, password) {
 		try {
 			const candidate = await User.findOne({ username });
 
 			if (candidate) {
-				throw new Error('A user with the same name already exists');
+				throw ApiError.badRequest('A user with the same name already exists');
 			}
 
 			const hashPassword = await bcrypt.hash(password, 5);
-			const user = await User.create({ username, password: hashPassword, roles: 'USER' });
+			const user = await User.create({ username, password: hashPassword, roles: 'ADMIN' });
 
 			const userDto = new UserDto(user);
 
@@ -23,18 +23,86 @@ class UserService {
 
 			await TokenService.saveToken(userDto.id, token.refreshToken);
 
-			console.log('user dto:', userDto);
-
 			return {
 				...token,
 				user: userDto,
 			};
 		} catch (error) {
-			throw new Error(error);
+			throw error;
 		}
 	}
 
+	async login(username, password) {
+		const user = await User.findOne({ username });
 
+		if (!user) {
+			throw ApiError.badRequest('This account does not exist!')
+		}
+
+		const validPassword = await bcrypt.compare(password, user.password);
+
+		if (!validPassword) {
+			throw ApiError.badRequest('Invalid password!');
+		}
+
+		const userDto = new UserDto(user);
+
+		const token = TokenService.generateToken({ ...userDto });
+		await TokenService.saveToken(userDto.id, token.refreshToken);
+
+		return {
+			...token,
+			user: userDto,
+		};
+	}
+
+	async refresh(refreshToken) {
+		try {
+
+			if (!refreshToken) {
+				throw ApiError.unAuthorizedError();
+			}
+
+			const userData = await TokenService.validateRefreshToken(refreshToken);
+			const tokenFromDb = await TokenService.findToken(refreshToken);
+
+			if (!userData || !tokenFromDb) {
+				throw ApiError.unAuthorizedError();
+			}
+			const user = await User.findById(userData.id);
+
+			const userDto = new UserDto(user);
+
+			const token = TokenService.generateToken({ ...userDto });
+			await TokenService.saveToken(userDto.id, token.refreshToken);
+
+			return {
+				...token,
+				user: userDto,
+			};
+
+		} catch (error) {
+			throw ApiError.badRequest('ошибка при обновлении токена', error)
+		}
+
+	}
+
+	async getAllUsers() {
+		const users = await UserModel.find();
+		return users;
+	}
+
+	async logout(refreshToken) {
+		const token = await TokenService.removeToken(refreshToken);
+		return token
+	}
+
+	async getUsers() {
+		const allUsers = await User.find();
+
+		return allUsers
+	}
 }
+
 
 module.exports = new UserService();

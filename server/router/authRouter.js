@@ -9,9 +9,12 @@ router.post('/registration', [
 	check('username', 'имя пользователя не может быть пустым!').notEmpty(),
 	check('password', 'пароль должен быть длиннее 4 символов и короче 15').isLength({ min: 4, max: 15 })
 ], controller.registration);
-router.post('/login', controller.login);
-router.post('/logout',)
+router.post('/login', [
+	check('username', 'имя пользователя не может быть пустым!').notEmpty(),
+	check('password', 'пароль должен быть длиннее 4 символов и короче 15').isLength({ min: 4, max: 15 })
+], controller.login);
+router.post('/logout', controller.logout)
 router.get('/users', roleMiddleware(['ADMIN']), controller.getUsers);
-router.get('/refresh');
+router.get('/refresh', controller.refresh);
 
 module.exports = router
