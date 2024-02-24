@@ -1,1 +1,0 @@
-I will create an online gadget store using the Ebay API
