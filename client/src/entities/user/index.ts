@@ -1,0 +1,1 @@
+export { UserReducer } from './model/slice/User'
