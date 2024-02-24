@@ -24,29 +24,26 @@ export const AuthPage: FC<AuthPageProps> = ({ className }) => {
 
 	const isLogin = location.pathname === RouterPath.authorization;
 
-	const registerUser = () => {
-		console.log('registerUser:', isAuth);
+	const registerUser = async () => {
+		const success = await dispatch(registration(username, password));
 
-		dispatch(registration(username, password))
-
-		if (!error) {
-			navigate(RouterPath.main)
-			console.log(error);
-
-		}
-
-	}
-
-	const login = () => {
-		console.log('login:', isAuth);
-		dispatch(loginUser(username, password))
-
-		if (!error) {
-			navigate(RouterPath.main)
+		if (success) {
+			navigate(RouterPath.main);
+		} else {
 			console.log('error:', error);
 		}
-
 	}
+
+	const login = async () => {
+		const success = await dispatch(loginUser(username, password));
+
+		if (success) {
+			navigate(RouterPath.main);
+		} else {
+			console.log('error:', error);
+		}
+	}
+
 
 	return (
 		<Container className={classNames(styles.Auth)}>

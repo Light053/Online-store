@@ -15,8 +15,8 @@ export const loginUser = (username: string, password: string) => async (dispatch
 		localStorage.setItem('token', response.data.accesToken);
 
 		dispatch(userSlice.actions.userLoginSuccess(response.data.user))
-		console.log(response);
 
+		return true
 	} catch (error) {
 		dispatch(userSlice.actions.userLoginError(error.response.data.errors))
 	}
@@ -31,7 +31,8 @@ export const registration = (username: string, password: string) => async (dispa
 		localStorage.setItem('token', response.data.accesToken);
 
 		dispatch(userSlice.actions.userRegistrationSuccess(response.data.user))
-		console.log(response);
+
+		return true
 
 	} catch (error) {
 
@@ -53,7 +54,7 @@ export const logout = () => async (dispatch: AppDispatch) => {
 	}
 }
 
-export const checkAuth = async () => async (dispatch: AppDispatch) => {
+export const checkAuth = () => async (dispatch: AppDispatch) => {
 	try {
 		dispatch(userSlice.actions.userCheckAuth())
 

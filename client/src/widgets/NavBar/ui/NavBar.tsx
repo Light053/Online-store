@@ -46,6 +46,7 @@ const NavBar: FC<NavBarProps> = ({ className }) => {
 						<Button
 							className={styles.link}
 							onClick={handleLogout}
+							variant={"outline-light"}
 						>
 							Exit
 						</Button>

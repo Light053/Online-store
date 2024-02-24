@@ -20,7 +20,7 @@ export const App: FC<AppProps> = ({ className }) => {
 
 	useEffect(() => {
 		if (localStorage.getItem('token')) {
-			dispatch(checkAuth);
+			dispatch(checkAuth());
 		}
 	}, [])
 
