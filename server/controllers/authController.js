@@ -3,11 +3,8 @@ const Role = require('../models/Role')
 const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
-const { secret } = require('../config');
 const UserService = require('../service/UserService');
 const ApiError = require('../exceptions/ApiError');
-
-
 
 class AuthController {
 	saltRounds = 5;

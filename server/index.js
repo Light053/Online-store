@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const authRouter = require('./router/authRouter')
+const productRouter = require('./router/ProductRouter')
 require('dotenv').config({ path: '.env' });
 const URI = require('./db-uri');
 const PORT = process.env.PORT || 5000;
@@ -17,6 +18,7 @@ app.use(cors({
 	origin: 'http://localhost:3000'
 }))
 app.use("/auth", authRouter)
+app.use("/products", productRouter)
 app.use(errorMiddleware)
 
 const start = async () => {
