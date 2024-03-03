@@ -8,10 +8,12 @@ require('dotenv').config({ path: '.env' });
 const URI = require('./db-uri');
 const PORT = process.env.PORT || 5000;
 const errorMiddleware = require('./middlewares/errorMiddleware')
+const fileUpload = require('express-fileupload')
 
 const app = express();
 
 app.use(express.json())
+app.use(fileUpload())
 app.use(cookieParser())
 app.use(cors({
 	credentials: true,

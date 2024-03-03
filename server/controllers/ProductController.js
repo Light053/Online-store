@@ -1,17 +1,17 @@
-const Item = require("../models/Item");
-const User = require("../models/User");
+const ApiError = require("../exceptions/ApiError");
+const Item = require("../models/productsModels/Item");
+const User = require("../models/userModels/User");
 const ProductService = require("../service/ProductService");
 
 class ProductController {
 
 	async setProduct(req, res, next) {
 		try {
-			const productData = await ProductService.setProduct(req.body);
+			const productData = await ProductService.setProduct(req);
 
 			res.status(200).json(productData);
 		} catch (error) {
-
-			next(error)
+			next(ApiError.badRequest(error.message))
 		}
 	}
 
@@ -32,6 +32,29 @@ class ProductController {
 			res.status(200).json(updatedProduct);
 		} catch (error) {
 			next(error);
+		}
+	}
+
+	async getProduct(req, res, next) {
+		try {
+			const { name } = req.body;
+			const products = await ProductService.getProduct(name);
+
+			res.status(200).json(products);
+		} catch (error) {
+			console.log(error);
+			next(ApiError.badRequest(error.message))
+		}
+	}
+
+	async getProducts(req, res, next) {
+		try {
+			const products = await ProductService.getProducts();
+
+			res.status(200).json(products);
+		} catch (error) {
+			console.log(error);
+			next(ApiError.badRequest(error.message))
 		}
 	}
 }

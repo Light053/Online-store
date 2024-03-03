@@ -5,6 +5,6 @@ const router = new Router();
 
 router.post('/setProduct', productController.setProduct);
 router.post('/addReview', productController.addReview);
-
-
+router.get('/products', productController.getProducts);
+router.get('/product', productController.getProduct);
 module.exports = router

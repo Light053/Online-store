@@ -1,5 +1,5 @@
-const User = require('../models/User')
-const Role = require('../models/Role')
+const User = require('../models/userModels/User')
+const Role = require('../models/userModels/Role')
 const bcrypt = require('bcrypt');
 const TokenService = require('../service/TokenService')
 const UserDto = require('../dtos/UserDto');
