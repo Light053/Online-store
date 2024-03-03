@@ -65,9 +65,11 @@ class ProductService {
 		}
 	}
 
-	async getProducts() {
+	async getProducts(limit, offset) {
 		try {
-			const products = await Item.find();
+			const products = await Item.find()
+				.skip(offset)
+				.limit(limit)
 			return products;
 		} catch (error) {
 			throw error;

@@ -47,9 +47,14 @@ class ProductController {
 		}
 	}
 
-	async getProducts(req, res, next) {
+	async getProducts(req, res, next,) {
 		try {
-			const products = await ProductService.getProducts();
+			let { limit, page } = req.query
+			page = page || 1;
+			limit = limit || 9;
+			let offset = page * limit - limit
+
+			const products = await ProductService.getProducts(limit, offset)
 
 			res.status(200).json(products);
 		} catch (error) {
