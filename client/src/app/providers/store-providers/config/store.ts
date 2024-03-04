@@ -1,9 +1,11 @@
 import { ReducersMapObject, configureStore } from '@reduxjs/toolkit'
 import { StateSchema } from './state-schema'
 import { UserReducer } from 'entities/user'
+import { ProductsReducer } from 'entities/products/model/slice/ProductsSlice'
 
 const rootReducers: ReducersMapObject<StateSchema> = {
-	user: UserReducer
+	user: UserReducer,
+	products: ProductsReducer
 }
 export function createReduxStore(initialState?: StateSchema) {
 

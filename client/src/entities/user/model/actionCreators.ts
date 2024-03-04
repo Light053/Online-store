@@ -1,10 +1,10 @@
 import { AppDispatch } from "app/providers/store-providers/config/store";
-import AuthService from "app/service/AuthService";
+import AuthService from "app/service/UserService/AuthService";
 import { userSlice } from "./slice/User";
 import { IUser } from "app/models/response/IUser";
 import axios from "axios";
 import { AuthResponse } from "app/models/response/AuthResponse";
-import { API_URL } from "app/http";
+import { API_AUTH_URL } from "app/http";
 
 
 export const loginUser = (username: string, password: string) => async (dispatch: AppDispatch) => {
@@ -58,7 +58,7 @@ export const checkAuth = () => async (dispatch: AppDispatch) => {
 	try {
 		dispatch(userSlice.actions.userCheckAuth())
 
-		const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, { withCredentials: true })
+		const response = await axios.get<AuthResponse>(`${API_AUTH_URL}/refresh`, { withCredentials: true })
 		console.log(response);
 
 		dispatch(userSlice.actions.userCheckAuthSuccess())
