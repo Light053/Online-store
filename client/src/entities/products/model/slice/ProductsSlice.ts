@@ -3,22 +3,27 @@ import { StateTypes } from "../types/stateType";
 import { fetchSmartphones } from "../actionsCreatots";
 import { SmartphonesTypes } from "../types/smartphonesType";
 import { BrandTypes } from "../types/brandsType";
+import { TypesType } from "../types/typesType";
 
 const initialState: StateTypes = {
 	smartphones: [],
-	brands: [{ name: "Samsung" }, { name: "Apple" }, { name: "One Pluse" }],
+	brands: [{ name: "Samsung" }, { name: "Apple" }, { name: "One Pluse" }, { name: "Google Pixel" }],
 	types: [{ name: "Smartphones" }, { name: "PC" }, { name: "PlayStations" }, { name: "Laptopes" }],
 	isLoading: false,
 	error: '',
-	selectedType: {}
+	selectedType: {},
+	selectedBrand: {}
 }
 
 export const ProductsSlice = createSlice({
 	name: 'products',
 	initialState,
 	reducers: {
-		setSelectedType: (state: StateTypes, action: PayloadAction<BrandTypes>) => {
+		setSelectedType: (state: StateTypes, action: PayloadAction<TypesType>) => {
 			state.selectedType = action.payload
+		},
+		setSelectedBrand: (state: StateTypes, action: PayloadAction<BrandTypes>) => {
+			state.selectedBrand = action.payload
 		}
 	},
 	extraReducers: (builder) => {
@@ -37,5 +42,5 @@ export const ProductsSlice = createSlice({
 			});
 	}
 });
-export const { setSelectedType } = ProductsSlice.actions
+export const { setSelectedType, setSelectedBrand } = ProductsSlice.actions
 export const ProductsReducer = ProductsSlice.reducer

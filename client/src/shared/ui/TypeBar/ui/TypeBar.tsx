@@ -3,10 +3,9 @@ import { classNames } from "shared/lib/class-names/class-names"
 import styles from './TypeBar.module.scss'
 import { ListGroup } from "react-bootstrap"
 import { useAppSelector } from "features/hooks/useAppSelector"
-import { stripVTControlCharacters } from "util"
 import { useAppDispatch } from "features/hooks/useAppDispatch"
 import { setSelectedType } from "entities/products/model/slice/ProductsSlice"
-import { BrandTypes } from "entities/products/model/types/brandsType"
+import { TypesType } from "entities/products/model/types/typesType"
 
 
 interface TypeBarProps {
@@ -19,7 +18,7 @@ export const TypeBar: FC<TypeBarProps> = ({ className }) => {
 	const selectedType = useAppSelector(state => state.products.selectedType);
 	const dispatch = useAppDispatch();
 
-	const selectType = (type: BrandTypes) => {
+	const selectType = (type: TypesType) => {
 		dispatch(setSelectedType(type))
 	}
 

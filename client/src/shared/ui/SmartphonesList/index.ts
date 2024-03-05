@@ -1,0 +1,1 @@
+export { SmartphonesList } from './ui/SmartphonesList'

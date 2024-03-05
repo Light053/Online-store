@@ -21,7 +21,7 @@ const NavBar: FC<NavBarProps> = ({ className }) => {
 	const dispatch = useAppDispatch();
 	const checkAuth = () => {
 		if (isAuth) {
-			navigate('/store');
+			navigate('/');
 		}
 	}
 

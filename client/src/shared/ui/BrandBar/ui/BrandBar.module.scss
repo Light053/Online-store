@@ -1,13 +1,8 @@
-.listItem {
+.cardItem {
+	width: 150px;
+	margin-right: 7px;
+	cursor: pointer;
 	background-color: var(--inverted-primary-color);
 	color: var(--primary-color);
-	;
 	font-weight: 500;
-	font-size: 18px;
-	cursor: pointer;
-
-}
-
-.TypeBar {
-	width: 250px;
 }

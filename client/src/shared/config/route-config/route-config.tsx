@@ -9,7 +9,7 @@ enum AppRoutes {
 }
 
 export const RouterPath: Record<AppRoutes, string> = {
-	[AppRoutes.STORE]: '/store',
+	[AppRoutes.STORE]: '/',
 	[AppRoutes.AUTH]: '/authorization',
 	[AppRoutes.REGISTRATION]: '/registration'
 

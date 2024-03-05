@@ -8,5 +8,6 @@ export interface StateTypes {
 	types: TypesType[];
 	isLoading: boolean,
 	error: string,
-	selectedType: {}
+	selectedType: {},
+	selectedBrand: {}
 }
