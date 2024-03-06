@@ -1,5 +1,5 @@
 This is a fullstack application using:
-frontend: React.ts + webpack + scss (css modules)
+frontend: React.ts + webpack + RTK + scss (css modules)
 
 Backend: MongoDB, mongoose, express, jwt
 
