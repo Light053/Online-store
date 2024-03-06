@@ -1,6 +1,6 @@
-This is a client-server application developed using: React.ts + RTK, webpack + scss
+This is a fullstack application using:
+frontend: React.ts + webpack + RTK + scss (css modules)
 
-I will use the Ebay API to receive items and process them further
+Backend: MongoDB, mongoose, express, jwt
 
-the database was developed using Mongo, mongoose, express
-Authorization using jwt
+Online device store
