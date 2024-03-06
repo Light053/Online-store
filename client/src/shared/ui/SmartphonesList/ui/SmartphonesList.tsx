@@ -6,6 +6,7 @@ import { useAppDispatch } from "features/hooks/useAppDispatch"
 import { fetchSmartphones } from "entities/products/model/actionsCreatots"
 import { Row, Spinner } from "react-bootstrap"
 import { DeviceItem } from "widgets/DeviceItem/ui/DeviceItem"
+import { clearSmartphones } from "entities/products/model/slice/ProductsSlice"
 
 
 interface SmartphonesListProps {
@@ -19,10 +20,11 @@ export const SmartphonesList: FC<SmartphonesListProps> = ({ className }) => {
 
 	useEffect(() => {
 		const fetchApi = async () => {
+			dispatch(clearSmartphones());
 			dispatch(fetchSmartphones());
 		}
 		fetchApi();
-	}, [dispatch])
+	}, [])
 
 	if (isLoading) {
 		return <div className={styles.spinner}><Spinner /></div>

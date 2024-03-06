@@ -1,0 +1,66 @@
+.row1 {
+	display: flex;
+	margin-top: 20px;
+	margin-bottom: 20px;
+
+	.img {
+		border-radius: 10px;
+	}
+
+	.rating {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		font-size: 48px;
+		color: var(--inverted-primary-color);
+	}
+
+	.btn {
+		margin-top: 50px;
+		padding: 10px;
+		font-size: 22px;
+		color: var(--primary-color);
+	}
+}
+
+.spec {
+	list-style: none;
+	margin-bottom: 10px;
+	border-radius: 1px;
+	padding: 5px;
+}
+
+.DeviceInfo {
+	padding: 20px;
+}
+
+.rating {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.row2 {
+	background-color: var(--navbar-color);
+	padding: 20px;
+}
+
+h2,
+h3 {
+	color: var(--primary-color);
+}
+
+p {
+	margin-bottom: 5px;
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+}
+
+li {
+	margin-bottom: 5px;
+
+}

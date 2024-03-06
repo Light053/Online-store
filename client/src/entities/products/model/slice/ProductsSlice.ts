@@ -24,6 +24,9 @@ export const ProductsSlice = createSlice({
 		},
 		setSelectedBrand: (state: StateTypes, action: PayloadAction<BrandTypes>) => {
 			state.selectedBrand = action.payload
+		},
+		clearSmartphones: (state: StateTypes) => {
+			state.smartphones = [];
 		}
 	},
 	extraReducers: (builder) => {
@@ -42,5 +45,5 @@ export const ProductsSlice = createSlice({
 			});
 	}
 });
-export const { setSelectedType, setSelectedBrand } = ProductsSlice.actions
+export const { setSelectedType, setSelectedBrand, clearSmartphones } = ProductsSlice.actions
 export const ProductsReducer = ProductsSlice.reducer

@@ -1,0 +1,1 @@
+export { DeviceInfoPage } from './ui/DeviceInfoPage'
