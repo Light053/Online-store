@@ -10,7 +10,6 @@ import { useAppSelector } from "features/hooks/useAppSelector";
 import { logout } from "entities/user/model/actionCreators";
 import { useAppDispatch } from "features/hooks/useAppDispatch";
 
-
 interface NavBarProps {
 	className?: string;
 }
@@ -27,8 +26,13 @@ const NavBar: FC<NavBarProps> = ({ className }) => {
 
 	const handleLogout = () => {
 		dispatch(logout())
-		navigate('/authorization')
+		navigate(RouterPath.authorization)
 	}
+
+	const handleAdminPanel = () => {
+		navigate(RouterPath.admin)
+	}
+
 	console.log(isAuth);
 
 	return (
@@ -40,6 +44,7 @@ const NavBar: FC<NavBarProps> = ({ className }) => {
 						<Button
 							className={styles.link}
 							variant={"outline-light"}
+							onClick={handleAdminPanel}
 						>
 							Admin Panel
 						</Button>

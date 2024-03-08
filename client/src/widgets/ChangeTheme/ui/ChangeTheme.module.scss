@@ -1,0 +1,25 @@
+.ChangeTheme {
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+	z-index: 9999;
+
+	border-color: var(--inverted-bg-color);
+	color: var(--primary-color);
+
+	&:hover {
+		background-color: var(--inverted-bg-color);
+		color: var(--inverted-primary-color);
+	}
+}
+
+.change-theme-wrapper {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	width: 100%;
+}
+
+.ChangeThemeButton {
+	margin-left: 10px;
+}

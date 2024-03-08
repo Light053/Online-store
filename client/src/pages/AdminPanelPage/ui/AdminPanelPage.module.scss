@@ -1,0 +1,11 @@
+.addType,
+.addBrand,
+.addDevice {
+	border-color: var(--inverted-bg-color);
+	color: var(--primary-color);
+
+	&:hover {
+		background-color: var(--inverted-bg-color);
+		color: var(--inverted-primary-color);
+	}
+}
