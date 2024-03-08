@@ -1,0 +1,31 @@
+.specName {
+	max-width: 150px;
+}
+
+.specInput {
+	max-width: 300px;
+}
+
+.spec-wrapper {
+	display: flex;
+
+}
+
+.specName,
+.specInput {
+	margin-right: 20px;
+}
+
+.specForm {
+	margin-top: 10px;
+}
+
+.addedBtn {
+	margin-top: 10px;
+	border: 1px solid black;
+}
+
+.addedBtn:hover {
+	color: white;
+	background-color: green;
+}

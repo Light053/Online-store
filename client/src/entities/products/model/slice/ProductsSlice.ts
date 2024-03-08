@@ -8,7 +8,7 @@ import { TypesType } from "../types/typesType";
 const initialState: StateTypes = {
 	smartphones: [],
 	brands: [{ name: "Samsung" }, { name: "Apple" }, { name: "One Pluse" }, { name: "Google Pixel" }],
-	types: [{ name: "Smartphones" }, { name: "PC" }, { name: "PlayStations" }, { name: "Laptopes" }],
+	types: [{ name: "Smartphone" }, { name: "PC" }, { name: "PlayStation" }, { name: "Laptop" }],
 	isLoading: false,
 	error: '',
 	selectedType: {},

@@ -1,1 +1,1 @@
-export { } from './ui/DeviceModal'
+export { DeviceModal } from './ui/DeviceModal'

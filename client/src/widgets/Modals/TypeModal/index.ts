@@ -1,1 +1,0 @@
-export { TypeModal } from './ui/TypeModal'

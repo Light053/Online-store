@@ -1,0 +1,18 @@
+.addedBtn,
+.closeBtn {
+	border: 1px solid black;
+}
+
+.addedBtn:hover {
+	color: white;
+	background-color: green;
+}
+
+.closeBtn:hover {
+	color: white;
+	background-color: rgb(131, 0, 0);
+}
+
+.modal.fade .modal-dialog {
+	transition: transform 0.3s ease-in-out !important;
+}

@@ -9,6 +9,7 @@ import { Button } from "react-bootstrap";
 import { useAppSelector } from "features/hooks/useAppSelector";
 import { logout } from "entities/user/model/actionCreators";
 import { useAppDispatch } from "features/hooks/useAppDispatch";
+import { MyButton } from "shared/ui/Button";
 
 interface NavBarProps {
 	className?: string;
@@ -41,20 +42,18 @@ const NavBar: FC<NavBarProps> = ({ className }) => {
 				<Button variant="outline-dark" className={styles.brand} onClick={checkAuth}>BuyDevice</Button>
 				{isAuth ?
 					<Nav className="ml-auto">
-						<Button
+						<MyButton
 							className={styles.link}
-							variant={"outline-light"}
 							onClick={handleAdminPanel}
 						>
 							Admin Panel
-						</Button>
-						<Button
+						</MyButton>
+						<MyButton
 							className={styles.link}
 							onClick={handleLogout}
-							variant={"outline-light"}
 						>
 							Exit
-						</Button>
+						</MyButton>
 					</Nav>
 					:
 					<Nav className="ml-auto">
