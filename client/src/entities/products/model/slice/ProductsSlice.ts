@@ -7,8 +7,13 @@ import { TypesType } from "../types/typesType";
 
 const initialState: StateTypes = {
 	smartphones: [],
-	brands: [{ name: "Samsung" }, { name: "Apple" }, { name: "One Pluse" }, { name: "Google Pixel" }],
-	types: [{ name: "Smartphone" }, { name: "PC" }, { name: "PlayStation" }, { name: "Laptop" }],
+	types: [
+		{ name: "Smartphone", brands: ["Apple", "Samsung", "Google", "Huawei", "Xiaomi", "OnePlus", "LG", "Sony", "Motorola"] },
+		{ name: "PC", brands: ["Dell", "HP", "Lenovo", "Asus", "Acer", "Apple", "MSI"] },
+		{ name: "PlayStation", brands: ["Sony"] },
+		{ name: "Laptop", brands: ["Dell", "HP", "Lenovo", "Asus", "Acer", "Apple", "Microsoft", "MSI"] }
+	],
+
 	isLoading: false,
 	error: '',
 	selectedType: {},

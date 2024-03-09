@@ -69,11 +69,11 @@ export const AuthPage: FC<AuthPageProps> = ({ className }) => {
 						<Row className="mt-3 align-items-center">
 
 							<Col>
-								{isLogin ? <span style={{ fontSize: '20px', fontWeight: '500' }}>
+								{isLogin ? <span className={styles.qText} style={{ fontSize: '20px', fontWeight: '500' }}>
 									No account? <NavLink to={RouterPath.registration}> register</NavLink>
 								</span>
 									:
-									<span style={{ fontSize: '20px', fontWeight: '500' }}>
+									<span className={styles.qText} style={{ fontSize: '20px', fontWeight: '500' }}>
 										Have an acount? <NavLink to={RouterPath.authorization}> Log in!</NavLink>
 									</span>}
 

@@ -4,6 +4,7 @@ import { MyButton } from "shared/ui/Button";
 import { useAppSelector } from "features/hooks/useAppSelector";
 import styles from './DeviceModal.module.scss'
 import { SmartphoneFields } from "features/UniqFieldsDevice/SmartphoneFields/SmartphoneFields";
+import { UniqFieldsDevice } from "features/UniqFieldsDevice";
 
 interface DeviceModalProps {
 	className?: string;
@@ -15,14 +16,10 @@ export const DeviceModal: FC<DeviceModalProps> = (props) => {
 	const { className, show, onHide, ...otherProps } = props;
 
 	const types = useAppSelector(state => state.products.types);
-
 	const [selectedType, setSelectedType] = useState<string>("");
 
-	console.log('type:', selectedType);
 	const handleTypeSelect = (type: string) => {
 		setSelectedType(type);
-		console.log('type:', type);
-
 	};
 
 
@@ -56,7 +53,7 @@ export const DeviceModal: FC<DeviceModalProps> = (props) => {
 
 					</Dropdown.Menu>
 				</Dropdown>
-				<SmartphoneFields onHide={onHide} />
+				<UniqFieldsDevice selectedType={selectedType} onHide={onHide} />
 			</Modal.Body>
 			<Modal.Footer>
 				<MyButton className={styles.closeBtn} onClick={() => onHide()}>Close</MyButton>

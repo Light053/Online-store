@@ -1,19 +1,19 @@
 import React, { FC, useState } from "react";
 import { classNames } from "shared/lib/class-names/class-names";
-import { SmartphonesTypes } from "entities/products/model/types/smartphonesType";
 import { Form, FormGroup, FormLabel, FormControl, Button, Dropdown } from "react-bootstrap";
 import { useAppSelector } from "features/hooks/useAppSelector";
-import styles from './SmartphoneField.module.scss';
-import { MyButton } from "shared/ui/Button";
+import styles from './PlayStation.module.scss';
+import { PlayStationTypes } from "entities/products/model/types/PlayStationType";
+import { MyButton } from "shared/ui/Button/ui/MyButton";
 
-interface SmartphoneFieldsProps {
+interface PlayStationFieldsProps {
 	className?: string;
-	SmartphoneType?: SmartphonesTypes;
+	pcType?: PlayStationTypes;
 	onHide: () => void;
 }
 
-export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, SmartphoneType, onHide }) => {
-	const [smartphone, setSmartphone] = useState<SmartphonesTypes>({
+export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcType, onHide }) => {
+	const [playStation, setPlayStation] = useState<PlayStationTypes>({
 		name: "",
 		price: 0,
 		brand: "",
@@ -21,25 +21,30 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 		images: [],
 		model: "",
 		specifications: [
-			{ name: "ram", value: '' },
 			{ name: "processor", value: '' },
+			{ name: "graphics card", value: '' },
 			{ name: "storage", value: '' },
-			{ name: "display", value: '' },
-			{ name: "camera", value: '' },
-			{ name: "battery", value: '' },
+			{ name: "ram", value: '' },
+			{ name: "ports and connectors", value: '' },
+			{ name: "dimensions and weight", value: '' },
+			{ name: "power supply unit", value: '' },
 		]
 	});
 
+	console.log(playStation);
+
 	const [selectedBrand, setSelectedBrand] = useState<string>("");
 	const brands = useAppSelector(state => state.products.types);
-	const smBrands = brands[0].brands
+	const psBrands = brands[2].brands
+	console.log(psBrands);
+
 	const [nameError, setNameError] = useState<string>("");
 	const [priceError, setPriceError] = useState<string>("");
 	const [modelError, setModelError] = useState<string>("");
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
-		setSmartphone(prevState => ({
+		setPlayStation(prevState => ({
 			...prevState,
 			[name]: value
 		}));
@@ -51,7 +56,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 			const urlPattern = /^((http|https):\/\/)/;
 			return urlPattern.test(url);
 		});
-		setSmartphone(prev => ({
+		setPlayStation(prev => ({
 			...prev,
 			images: imagesArray
 		}))
@@ -59,7 +64,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 
 
 	const handleBrandSelect = (brand: string) => {
-		setSmartphone(prev => ({
+		setPlayStation(prev => ({
 			...prev,
 			brand
 		}))
@@ -68,14 +73,14 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 
 	const handleSpecificationChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
 		const value = e.target.value;
-		const updatedSpecifications = smartphone.specifications.map(spec => {
+		const updatedSpecifications = playStation.specifications.map(spec => {
 			if (spec.name === name) {
 				return { ...spec, value: value };
 			}
 			return spec;
 		});
 
-		setSmartphone(prev => ({
+		setPlayStation(prev => ({
 			...prev,
 			specifications: updatedSpecifications
 		}));
@@ -84,15 +89,15 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		if (smartphone.model.trim() === "") {
+		if (playStation.model.trim() === "") {
 			setModelError("Model is required");
 			return;
 		}
-		if (smartphone.name.trim() === "") {
+		if (playStation.name.trim() === "") {
 			setNameError("Name is required");
 			return;
 		}
-		if (smartphone.price === 0) {
+		if (playStation.price === 0) {
 			setPriceError("Please set price");
 			return;
 		}
@@ -102,14 +107,13 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 		setModelError("");
 		onHide();
 	};
-	console.log(smartphone);
 
 	return (
 		<Form onSubmit={handleSubmit}>
 			<Dropdown className="mt-4">
 				<Dropdown.Toggle>{selectedBrand ? selectedBrand : 'Select Brand'}</Dropdown.Toggle>
 				<Dropdown.Menu>
-					{smBrands.map(brand =>
+					{psBrands.map(brand =>
 						<Dropdown.Item
 							key={brand}
 							onClick={() => handleBrandSelect(brand)}
@@ -123,7 +127,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 				<FormControl
 					type="text"
 					name="name"
-					value={smartphone.name}
+					value={playStation.name}
 					onChange={handleChange}
 				/>
 				{nameError && <div className="text-danger">{nameError}</div>}
@@ -133,18 +137,17 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 				<FormControl
 					type="number"
 					name="price"
-					value={smartphone.price}
+					value={playStation.price}
 					onChange={handleChange}
 				/>
 				{priceError && <div className="text-danger">{priceError}</div>}
 			</FormGroup>
-
 			<FormGroup>
 				<FormLabel>Model</FormLabel>
 				<FormControl
 					type="text"
 					name="model"
-					value={smartphone.model}
+					value={playStation.model}
 					onChange={handleChange}
 				/>
 				{modelError && <div className="text-danger">{modelError}</div>}
@@ -154,7 +157,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 				<FormControl
 					as="textarea"
 					name="description"
-					value={smartphone.description}
+					value={playStation.description}
 					onChange={handleChange}
 				/>
 			</FormGroup>
@@ -168,8 +171,88 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 				/>
 			</FormGroup>
 
+
 			<FormGroup className={styles.specForm}>
-				<div className={classNames(styles.specWrapper, {}, ['d-flex mt-4'])}>
+				<div className={classNames(styles.specWrapper, {}, ['d-flex mt-2'])}>
+					<FormControl
+						type="text"
+						name="powerName"
+						value="power"
+						disabled
+						className={classNames(styles.specName, {}, ['mr2'])}
+					/>
+					<FormControl
+						type="text"
+						name="powerValue"
+						className={styles.specInput}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'power supply unit')}
+
+					/>
+				</div>
+			</FormGroup>
+
+
+			<FormGroup className={styles.specForm}>
+				<div className={classNames(styles.specWrapper, {}, ['d-flex mt-2'])}>
+					<FormControl
+						type="text"
+						name="dimensions"
+						value="dimensions"
+						disabled
+						className={classNames(styles.specName, {}, ['mr2'])}
+					/>
+					<FormControl
+						type="text"
+						name="dimensionsValue"
+						className={styles.specInput}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'dimensions and weight')}
+
+					/>
+				</div>
+			</FormGroup>
+
+
+			<FormGroup className={styles.specForm}>
+				<div className={classNames(styles.specWrapper, {}, ['d-flex mt-2'])}>
+					<FormControl
+						type="text"
+						name="portsName"
+						value="ports"
+						disabled
+						className={classNames(styles.specName, {}, ['mr2'])}
+					/>
+					<FormControl
+						type="text"
+						name="portsValue"
+						className={styles.specInput}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'ports and connectors')}
+
+					/>
+				</div>
+			</FormGroup>
+
+
+			<FormGroup className={styles.specForm}>
+				<div className={classNames(styles.specWrapper, {}, ['d-flex mt-2'])}>
+					<FormControl
+						type="text"
+						name="graphicsName"
+						value="graphics card"
+						disabled
+						className={classNames(styles.specName, {}, ['mr2'])}
+					/>
+					<FormControl
+						type="text"
+						name="graphicsValue"
+						className={styles.specInput}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'graphics card')}
+
+					/>
+				</div>
+			</FormGroup>
+
+			<FormGroup className={styles.specForm}>
+				<div className={classNames(styles.specWrapper, {}, ['d-flex mt-2'])}>
 					<FormControl
 						type="text"
 						name="processorName"
@@ -186,7 +269,6 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 					/>
 				</div>
 			</FormGroup>
-
 			<FormGroup className={styles.specForm}>
 				<div className={classNames(styles.specWrapper, {}, ['d-flex'])}>
 					<FormControl
@@ -204,7 +286,6 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 					/>
 				</div>
 			</FormGroup>
-
 			<FormGroup className={styles.specForm}>
 				<div className={classNames(styles.specWrapper, {}, ['d-flex'])}>
 					<FormControl
@@ -222,61 +303,6 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 					/>
 				</div>
 			</FormGroup>
-
-			<FormGroup className={styles.specForm}>
-				<div className={classNames(styles.specWrapper, {}, ['d-flex'])}>
-					<FormControl
-						type="text"
-						name="display"
-						value="Display"
-						disabled
-						className={classNames(styles.specName, {}, ['mr2'])}
-					/>
-					<FormControl
-						type="text"
-						name="displayValue"
-						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'display')}
-					/>
-				</div>
-			</FormGroup>
-
-			<FormGroup className={styles.specForm}>
-				<div className={classNames(styles.specWrapper, {}, ['d-flex'])}>
-					<FormControl
-						type="text"
-						name="battery"
-						value="Battery"
-						disabled
-						className={classNames(styles.specName, {}, ['mr2'])}
-					/>
-					<FormControl
-						type="text"
-						name="batteryValue"
-						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'battery')}
-					/>
-				</div>
-			</FormGroup>
-
-			<FormGroup className={styles.specForm}>
-				<div className={classNames(styles.specWrapper, {}, ['d-flex'])}>
-					<FormControl
-						type="text"
-						name="camera"
-						value="Camera"
-						disabled
-						className={classNames(styles.specName, {}, ['mr2'])}
-					/>
-					<FormControl
-						type="text"
-						name="cameraValue"
-						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'camera')}
-					/>
-				</div>
-			</FormGroup>
-
 
 			<MyButton className={styles.addedBtn} type="submit">Added device</MyButton>
 		</Form>

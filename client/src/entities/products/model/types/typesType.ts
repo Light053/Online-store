@@ -1,3 +1,4 @@
 export interface TypesType {
-	name: string
+	name: string,
+	brands: string[]
 }

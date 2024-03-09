@@ -13,27 +13,34 @@ interface BrandBarProps {
 }
 
 export const BrandBar: FC<BrandBarProps> = ({ className }) => {
-	const brands = useAppSelector(state => state.products.brands);
-	const selectedBrand = useAppSelector(state => state.products.selectedBrand);
+	const types = useAppSelector(state => state.products.types);
 	const dispatch = useAppDispatch();
 
+	const allBrands = types.reduce((acc, type) => {
+		return acc.concat(type.brands);
+	}, []);
+
+	const uniqueBrands = Array.from(new Set(allBrands));
+	console.log(uniqueBrands);
+
+	const selectedBrand = useAppSelector(state => state.products.selectedBrand);
 
 	const selectBrand = (brand: BrandTypes) => {
-		dispatch(setSelectedBrand(brand))
+		dispatch(setSelectedBrand(brand));
 	}
-
 
 	return (
 		<Row className={classNames(styles.BrandBar, {}, [className, "d-flex mt-3"])}>
-			{brands.map((brand, index) =>
+			{uniqueBrands.map((brand, index) =>
 				<Card
 					className={classNames(styles.cardItem, {}, ["p-3 mt-1"])}
 					key={index}
 					border={brand === selectedBrand ? "light" : "dark"}
 					onClick={() => selectBrand(brand)}
 				>
-					{brand.name}
-				</Card>)}
+					{brand}
+				</Card>
+			)}
 		</Row>
 	)
 }

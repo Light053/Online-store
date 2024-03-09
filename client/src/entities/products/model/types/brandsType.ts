@@ -1,3 +1,3 @@
 export interface BrandTypes {
-	name: string
+	name: string,
 }

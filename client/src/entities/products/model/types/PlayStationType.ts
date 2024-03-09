@@ -1,7 +1,7 @@
 import { IUser } from "app/models/response/IUser";
 
 export interface PlayStationTypes {
-	name: string;
+	name?: string;
 	brand?: string;
 	model?: string;
 	description?: string;

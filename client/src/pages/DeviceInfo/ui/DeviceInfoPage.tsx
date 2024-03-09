@@ -49,7 +49,7 @@ export const DeviceInfoPage: FC<DeviceInfoProps> = ({ className }) => {
 								</div>
 
 							</Col>
-							<Col md={4}>
+							<Col className={styles.specCol} md={4}>
 								<h2>{device.name}</h2>
 								<p><strong>Brand:</strong> {device.brand}</p>
 								<p><strong>Model:</strong> {device.model}</p>
@@ -70,7 +70,7 @@ export const DeviceInfoPage: FC<DeviceInfoProps> = ({ className }) => {
 											className={styles.spec}
 											key={spec.name}
 											style={index % 2 === 0 ? { backgroundColor: "rgb(70, 70, 70)" } : { backgroundColor: "black" }}>
-											<strong>{spec.name}:</strong> {spec.value}
+											<strong className={styles.spec}>{spec.name}:</strong> {spec.value}
 										</li>
 									))}
 								</ul>

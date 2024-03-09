@@ -34,6 +34,10 @@ const NavBar: FC<NavBarProps> = ({ className }) => {
 		navigate(RouterPath.admin)
 	}
 
+	const handleAuth = () => {
+		navigate(RouterPath.authorization)
+	}
+
 	console.log(isAuth);
 
 	return (
@@ -57,12 +61,12 @@ const NavBar: FC<NavBarProps> = ({ className }) => {
 					</Nav>
 					:
 					<Nav className="ml-auto">
-						<NavLink
+						<MyButton
 							className={styles.link}
-							to={RouterPath.authorization}
+							onClick={handleAuth}
 						>
 							Authorization
-						</NavLink>
+						</MyButton>
 					</Nav>
 				}
 			</Container>

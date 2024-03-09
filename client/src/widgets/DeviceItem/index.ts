@@ -1,1 +1,1 @@
-import { } from './ui/DeviceItem'
+import { DeviceItem } from './ui/DeviceItem'
