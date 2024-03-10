@@ -7,6 +7,8 @@ import { productName } from "shared/lib/productName/productName";
 import { getProduct } from "shared/lib/getProduct/gerProduct";
 import { SmartphonesTypes } from "entities/products/model/types/smartphonesType";
 import BigStar from 'shared/assets/bigStar.png'
+import { Reviews } from "widgets/Reviews";
+import { ReviewsList } from "widgets/ReviewsList";
 
 interface DeviceInfoProps {
 	className?: string,
@@ -16,6 +18,7 @@ export const DeviceInfoPage: FC<DeviceInfoProps> = ({ className }) => {
 	const { name } = useParams();
 	const pName = productName(name);
 	const [device, setDevice] = useState<SmartphonesTypes>()
+	console.log(pName);
 
 	useEffect(() => {
 		const fetchDevice = async () => {
@@ -63,7 +66,7 @@ export const DeviceInfoPage: FC<DeviceInfoProps> = ({ className }) => {
 					<Container className={styles.row2}>
 						<Row>
 							<Col className="mt-2">
-								<h3 >Specifications:</h3>
+								<h3 className={styles.specTitle}>Specifications:</h3>
 								<ul>
 									{device.specifications.map((spec, index) => (
 										<li
@@ -76,6 +79,13 @@ export const DeviceInfoPage: FC<DeviceInfoProps> = ({ className }) => {
 								</ul>
 							</Col>
 						</Row>
+					</Container>
+					<Container>
+						<div className={styles.reviews}>Reviews</div>
+						<ReviewsList productName={pName} />
+					</Container>
+					<Container>
+						<Reviews productName={pName} />
 					</Container>
 				</>
 			)}

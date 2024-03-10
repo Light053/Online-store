@@ -19,6 +19,8 @@ export const userSlice = createSlice({
 		userLoginSuccess: (state, action: PayloadAction<IUser>) => {
 			state.error = '';
 			state.user = action.payload;
+			console.log('llllll', state.user);
+
 			state.isAuth = true;
 			console.log(state.isAuth);
 		},

@@ -1,6 +1,6 @@
 import { IUser } from "./IUser";
 
-export interface SmartphonesResponse {
+export interface ProductResponse {
 	name: string;
 	brand?: string;
 	model?: string;

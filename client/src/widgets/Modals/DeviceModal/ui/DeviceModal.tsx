@@ -3,7 +3,6 @@ import { Dropdown, Form, Modal } from "react-bootstrap";
 import { MyButton } from "shared/ui/Button";
 import { useAppSelector } from "features/hooks/useAppSelector";
 import styles from './DeviceModal.module.scss'
-import { SmartphoneFields } from "features/UniqFieldsDevice/SmartphoneFields/SmartphoneFields";
 import { UniqFieldsDevice } from "features/UniqFieldsDevice";
 
 interface DeviceModalProps {
@@ -41,7 +40,7 @@ export const DeviceModal: FC<DeviceModalProps> = (props) => {
 			</Modal.Header>
 			<Modal.Body>
 				<Dropdown>
-					<Dropdown.Toggle>{selectedType ? selectedType : "Select Type"}</Dropdown.Toggle>
+					<Dropdown.Toggle>{selectedType || "Select Type"}</Dropdown.Toggle>
 					<Dropdown.Menu>
 						{types.map(type =>
 							<Dropdown.Item

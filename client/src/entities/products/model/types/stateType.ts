@@ -1,4 +1,6 @@
+import { ReviewResponse } from "app/models/response/ReviewResponse";
 import { BrandTypes } from "./brandsType";
+import { ReviewType } from "./reviewType";
 import { SmartphonesTypes } from "./smartphonesType";
 import { TypesType } from "./typesType";
 
@@ -8,5 +10,6 @@ export interface StateTypes {
 	isLoading: boolean,
 	error: string,
 	selectedType: {},
-	selectedBrand: {}
+	selectedBrand: {},
+	reviews: ReviewResponse[]
 }

@@ -4,6 +4,7 @@ import { fetchSmartphones } from "../actionsCreatots";
 import { SmartphonesTypes } from "../types/smartphonesType";
 import { BrandTypes } from "../types/brandsType";
 import { TypesType } from "../types/typesType";
+import { ReviewResponse } from "app/models/response/ReviewResponse";
 
 const initialState: StateTypes = {
 	smartphones: [],
@@ -17,7 +18,8 @@ const initialState: StateTypes = {
 	isLoading: false,
 	error: '',
 	selectedType: {},
-	selectedBrand: {}
+	selectedBrand: {},
+	reviews: []
 }
 
 export const ProductsSlice = createSlice({
@@ -29,6 +31,9 @@ export const ProductsSlice = createSlice({
 		},
 		setSelectedBrand: (state: StateTypes, action: PayloadAction<BrandTypes>) => {
 			state.selectedBrand = action.payload
+		},
+		setReview: (state: StateTypes, action: PayloadAction<ReviewResponse[]>) => {
+			state.reviews.push(...action.payload)
 		},
 		clearSmartphones: (state: StateTypes) => {
 			state.smartphones = [];
@@ -50,5 +55,5 @@ export const ProductsSlice = createSlice({
 			});
 	}
 });
-export const { setSelectedType, setSelectedBrand, clearSmartphones } = ProductsSlice.actions
+export const { setSelectedType, setSelectedBrand, clearSmartphones, setReview } = ProductsSlice.actions
 export const ProductsReducer = ProductsSlice.reducer

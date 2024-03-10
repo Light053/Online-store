@@ -9,6 +9,7 @@ import { universalHandleBrandSelect } from "features/functionForFields/handleBra
 import { universalHandleChange } from "features/functionForFields/handleChange";
 import { universalHandleSpecificationChange } from "features/functionForFields/handleSpecificationChange";
 import { universalHandleImages } from "features/functionForFields/handleImages";
+import { setProdct } from "shared/lib/setProduct/setProduct";
 
 
 interface SmartphoneFieldsProps {
@@ -59,7 +60,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 			setPriceError("Please set price");
 			return;
 		}
-
+		setProdct(smartphone)
 		setNameError("");
 		setPriceError("");
 		setModelError("");

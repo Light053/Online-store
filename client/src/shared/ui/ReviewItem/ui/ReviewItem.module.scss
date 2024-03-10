@@ -1,0 +1,14 @@
+.nameAndStyles {
+	display: flex;
+	justify-content: space-between;
+}
+
+.date {
+	color: gray;
+}
+
+.ReviewItem {
+	margin-top: 15px;
+	background-color: var(--review-color);
+	color: var(--primary-color);
+}

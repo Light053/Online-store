@@ -5,6 +5,8 @@
 	border-radius: 10px;
 	color: var(--primary-color);
 	margin-right: 15px;
+	max-height: 400px;
+	overflow: hidden;
 
 	.cardImg {
 		height: 170px;
