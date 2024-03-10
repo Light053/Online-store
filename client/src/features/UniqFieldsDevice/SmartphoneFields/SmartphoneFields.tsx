@@ -5,6 +5,11 @@ import { Form, FormGroup, FormLabel, FormControl, Button, Dropdown } from "react
 import { useAppSelector } from "features/hooks/useAppSelector";
 import styles from './SmartphoneField.module.scss';
 import { MyButton } from "shared/ui/Button";
+import { universalHandleBrandSelect } from "features/functionForFields/handleBrandSelect";
+import { universalHandleChange } from "features/functionForFields/handleChange";
+import { universalHandleSpecificationChange } from "features/functionForFields/handleSpecificationChange";
+import { universalHandleImages } from "features/functionForFields/handleImages";
+
 
 interface SmartphoneFieldsProps {
 	className?: string;
@@ -30,6 +35,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 		]
 	});
 
+
 	const [selectedBrand, setSelectedBrand] = useState<string>("");
 	const brands = useAppSelector(state => state.products.types);
 	const smBrands = brands[0].brands
@@ -37,49 +43,6 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 	const [priceError, setPriceError] = useState<string>("");
 	const [modelError, setModelError] = useState<string>("");
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		setSmartphone(prevState => ({
-			...prevState,
-			[name]: value
-		}));
-	};
-
-	const handleImages = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const imagesString = e.target.value;
-		const imagesArray = imagesString.split(" ").filter((url) => {
-			const urlPattern = /^((http|https):\/\/)/;
-			return urlPattern.test(url);
-		});
-		setSmartphone(prev => ({
-			...prev,
-			images: imagesArray
-		}))
-	};
-
-
-	const handleBrandSelect = (brand: string) => {
-		setSmartphone(prev => ({
-			...prev,
-			brand
-		}))
-		setSelectedBrand(brand)
-	};
-
-	const handleSpecificationChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
-		const value = e.target.value;
-		const updatedSpecifications = smartphone.specifications.map(spec => {
-			if (spec.name === name) {
-				return { ...spec, value: value };
-			}
-			return spec;
-		});
-
-		setSmartphone(prev => ({
-			...prev,
-			specifications: updatedSpecifications
-		}));
-	};
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -112,7 +75,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 					{smBrands.map(brand =>
 						<Dropdown.Item
 							key={brand}
-							onClick={() => handleBrandSelect(brand)}
+							onClick={() => universalHandleBrandSelect(brand, setSmartphone, setSelectedBrand)}
 						>
 							{brand}
 						</Dropdown.Item>)}
@@ -124,7 +87,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 					type="text"
 					name="name"
 					value={smartphone.name}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setSmartphone)}
 				/>
 				{nameError && <div className="text-danger">{nameError}</div>}
 			</FormGroup>
@@ -134,7 +97,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 					type="number"
 					name="price"
 					value={smartphone.price}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setSmartphone)}
 				/>
 				{priceError && <div className="text-danger">{priceError}</div>}
 			</FormGroup>
@@ -145,7 +108,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 					type="text"
 					name="model"
 					value={smartphone.model}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setSmartphone)}
 				/>
 				{modelError && <div className="text-danger">{modelError}</div>}
 			</FormGroup>
@@ -155,7 +118,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 					as="textarea"
 					name="description"
 					value={smartphone.description}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setSmartphone)}
 				/>
 			</FormGroup>
 			<FormGroup>
@@ -164,7 +127,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 					as="input"
 					type="url"
 					name="images"
-					onChange={handleImages}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleImages(e, setSmartphone)}
 				/>
 			</FormGroup>
 
@@ -181,7 +144,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 						type="text"
 						name="processorValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'processor')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'processor', setSmartphone, smartphone)}
 
 					/>
 				</div>
@@ -200,7 +163,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 						type="text"
 						name="ramValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'ram')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'ram', setSmartphone, smartphone)}
 					/>
 				</div>
 			</FormGroup>
@@ -218,7 +181,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 						type="text"
 						name="storageValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'storage')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'storage', setSmartphone, smartphone)}
 					/>
 				</div>
 			</FormGroup>
@@ -236,7 +199,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 						type="text"
 						name="displayValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'display')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'display', setSmartphone, smartphone)}
 					/>
 				</div>
 			</FormGroup>
@@ -254,7 +217,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 						type="text"
 						name="batteryValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'battery')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'battery', setSmartphone, smartphone)}
 					/>
 				</div>
 			</FormGroup>
@@ -272,7 +235,7 @@ export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, Smartph
 						type="text"
 						name="cameraValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'camera')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'camera', setSmartphone, smartphone)}
 					/>
 				</div>
 			</FormGroup>

@@ -4,8 +4,8 @@ import { AxiosResponse } from 'axios'
 
 export default class SmartPhonesApi {
 
-	static async setProduct(): Promise<AxiosResponse<SmartphonesResponse[]>> {
-		return
+	static async setProduct(product: unknown): Promise<AxiosResponse<SmartphonesResponse[]>> {
+		return $apiProducts.post('setProduct', product)
 	}
 
 	static async getProducts(limit: number = 9, page: number = 1): Promise<AxiosResponse<SmartphonesResponse[]>> {

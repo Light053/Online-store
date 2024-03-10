@@ -5,6 +5,10 @@ import { useAppSelector } from "features/hooks/useAppSelector";
 import styles from './DesktopPCFields.module.scss';
 import { MyButton } from "shared/ui/Button";
 import { DesktopPCtypes } from "entities/products/model/types/PCTypes";
+import { universalHandleSpecificationChange } from "features/functionForFields/handleSpecificationChange";
+import { universalHandleImages } from "features/functionForFields/handleImages";
+import { universalHandleChange } from "features/functionForFields/handleChange";
+import { universalHandleBrandSelect } from "features/functionForFields/handleBrandSelect";
 
 interface DesktopPCtypesProps {
 	className?: string;
@@ -44,50 +48,6 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 	const [priceError, setPriceError] = useState<string>("");
 	const [modelError, setModelError] = useState<string>("");
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		setPC(prevState => ({
-			...prevState,
-			[name]: value
-		}));
-	};
-
-	const handleImages = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const imagesString = e.target.value;
-		const imagesArray = imagesString.split(" ").filter((url) => {
-			const urlPattern = /^((http|https):\/\/)/;
-			return urlPattern.test(url);
-		});
-		setPC(prev => ({
-			...prev,
-			images: imagesArray
-		}))
-	};
-
-
-	const handleBrandSelect = (brand: string) => {
-		setPC(prev => ({
-			...prev,
-			brand
-		}))
-		setSelectedBrand(brand)
-	};
-
-	const handleSpecificationChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
-		const value = e.target.value;
-		const updatedSpecifications = pc.specifications.map(spec => {
-			if (spec.name === name) {
-				return { ...spec, value: value };
-			}
-			return spec;
-		});
-
-		setPC(prev => ({
-			...prev,
-			specifications: updatedSpecifications
-		}));
-	};
-
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
@@ -118,7 +78,7 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 					{pcBrands.map(brand =>
 						<Dropdown.Item
 							key={brand}
-							onClick={() => handleBrandSelect(brand)}
+							onClick={() => universalHandleBrandSelect(brand, setPC, setSelectedBrand)}
 						>
 							{brand}
 						</Dropdown.Item>)}
@@ -130,7 +90,7 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 					type="text"
 					name="name"
 					value={pc.name}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setPC)}
 				/>
 				{nameError && <div className="text-danger">{nameError}</div>}
 			</FormGroup>
@@ -140,7 +100,7 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 					type="number"
 					name="price"
 					value={pc.price}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setPC)}
 				/>
 				{priceError && <div className="text-danger">{priceError}</div>}
 			</FormGroup>
@@ -150,7 +110,7 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 					type="text"
 					name="model"
 					value={pc.model}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setPC)}
 				/>
 				{modelError && <div className="text-danger">{modelError}</div>}
 			</FormGroup>
@@ -160,7 +120,7 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 					as="textarea"
 					name="description"
 					value={pc.description}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setPC)}
 				/>
 			</FormGroup>
 			<FormGroup>
@@ -169,7 +129,7 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 					as="input"
 					type="url"
 					name="images"
-					onChange={handleImages}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleImages(e, setPC)}
 				/>
 			</FormGroup>
 
@@ -187,7 +147,9 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 						type="text"
 						name="processorValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'processor')}
+						onChange={
+							(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'processor', setPC, pc)
+						}
 
 					/>
 				</div>
@@ -205,7 +167,9 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 						type="text"
 						name="graphicsValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'graphics card')}
+						onChange={
+							(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'graphics card', setPC, pc)
+						}
 
 					/>
 				</div>
@@ -223,7 +187,7 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 						type="text"
 						name="operatingValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'operating system')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'operating system', setPC, pc)}
 
 					/>
 				</div>
@@ -241,7 +205,7 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 						type="text"
 						name="ramValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'graphics card')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'graphics card', setPC, pc)}
 					/>
 				</div>
 			</FormGroup>
@@ -258,7 +222,7 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 						type="text"
 						name="storageValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'operating system')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'operating system', setPC, pc)}
 					/>
 				</div>
 			</FormGroup>
@@ -275,7 +239,7 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 						type="text"
 						name="portsValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'ports and connectors')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'ports and connectors', setPC, pc)}
 					/>
 				</div>
 			</FormGroup>
@@ -292,7 +256,7 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 						type="text"
 						name="dimensiosValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'dimensions and weight')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'dimensions and weight', setPC, pc)}
 					/>
 				</div>
 			</FormGroup>
@@ -309,7 +273,7 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 						type="text"
 						name="caseValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'case')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'case', setPC, pc)}
 					/>
 				</div>
 			</FormGroup>

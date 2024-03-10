@@ -5,6 +5,10 @@ import { useAppSelector } from "features/hooks/useAppSelector";
 import styles from './PlayStation.module.scss';
 import { PlayStationTypes } from "entities/products/model/types/PlayStationType";
 import { MyButton } from "shared/ui/Button/ui/MyButton";
+import { universalHandleBrandSelect } from "features/functionForFields/handleBrandSelect";
+import { universalHandleChange } from "features/functionForFields/handleChange";
+import { universalHandleSpecificationChange } from "features/functionForFields/handleSpecificationChange";
+import { universalHandleImages } from "features/functionForFields/handleImages";
 
 interface PlayStationFieldsProps {
 	className?: string;
@@ -42,49 +46,6 @@ export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcTyp
 	const [priceError, setPriceError] = useState<string>("");
 	const [modelError, setModelError] = useState<string>("");
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		setPlayStation(prevState => ({
-			...prevState,
-			[name]: value
-		}));
-	};
-
-	const handleImages = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const imagesString = e.target.value;
-		const imagesArray = imagesString.split(" ").filter((url) => {
-			const urlPattern = /^((http|https):\/\/)/;
-			return urlPattern.test(url);
-		});
-		setPlayStation(prev => ({
-			...prev,
-			images: imagesArray
-		}))
-	};
-
-
-	const handleBrandSelect = (brand: string) => {
-		setPlayStation(prev => ({
-			...prev,
-			brand
-		}))
-		setSelectedBrand(brand)
-	};
-
-	const handleSpecificationChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
-		const value = e.target.value;
-		const updatedSpecifications = playStation.specifications.map(spec => {
-			if (spec.name === name) {
-				return { ...spec, value: value };
-			}
-			return spec;
-		});
-
-		setPlayStation(prev => ({
-			...prev,
-			specifications: updatedSpecifications
-		}));
-	};
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -116,7 +77,7 @@ export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcTyp
 					{psBrands.map(brand =>
 						<Dropdown.Item
 							key={brand}
-							onClick={() => handleBrandSelect(brand)}
+							onClick={() => universalHandleBrandSelect(brand, setPlayStation, setSelectedBrand)}
 						>
 							{brand}
 						</Dropdown.Item>)}
@@ -128,7 +89,7 @@ export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcTyp
 					type="text"
 					name="name"
 					value={playStation.name}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setPlayStation)}
 				/>
 				{nameError && <div className="text-danger">{nameError}</div>}
 			</FormGroup>
@@ -138,7 +99,7 @@ export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcTyp
 					type="number"
 					name="price"
 					value={playStation.price}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setPlayStation)}
 				/>
 				{priceError && <div className="text-danger">{priceError}</div>}
 			</FormGroup>
@@ -148,7 +109,7 @@ export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcTyp
 					type="text"
 					name="model"
 					value={playStation.model}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setPlayStation)}
 				/>
 				{modelError && <div className="text-danger">{modelError}</div>}
 			</FormGroup>
@@ -158,7 +119,7 @@ export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcTyp
 					as="textarea"
 					name="description"
 					value={playStation.description}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setPlayStation)}
 				/>
 			</FormGroup>
 			<FormGroup>
@@ -167,7 +128,7 @@ export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcTyp
 					as="input"
 					type="url"
 					name="images"
-					onChange={handleImages}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleImages(e, setPlayStation)}
 				/>
 			</FormGroup>
 
@@ -185,7 +146,7 @@ export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcTyp
 						type="text"
 						name="powerValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'power supply unit')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'power supply unit', setPlayStation, playStation)}
 
 					/>
 				</div>
@@ -205,7 +166,7 @@ export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcTyp
 						type="text"
 						name="dimensionsValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'dimensions and weight')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'dimensions and weight', setPlayStation, playStation)}
 
 					/>
 				</div>
@@ -225,7 +186,7 @@ export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcTyp
 						type="text"
 						name="portsValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'ports and connectors')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'ports and connectors', setPlayStation, playStation)}
 
 					/>
 				</div>
@@ -245,7 +206,7 @@ export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcTyp
 						type="text"
 						name="graphicsValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'graphics card')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'graphics card', setPlayStation, playStation)}
 
 					/>
 				</div>
@@ -264,7 +225,7 @@ export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcTyp
 						type="text"
 						name="processorValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'processor')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'processor', setPlayStation, playStation)}
 
 					/>
 				</div>
@@ -282,7 +243,7 @@ export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcTyp
 						type="text"
 						name="ramValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'ram')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'ram', setPlayStation, playStation)}
 					/>
 				</div>
 			</FormGroup>
@@ -299,7 +260,7 @@ export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcTyp
 						type="text"
 						name="storageValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'storage')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'storage', setPlayStation, playStation)}
 					/>
 				</div>
 			</FormGroup>

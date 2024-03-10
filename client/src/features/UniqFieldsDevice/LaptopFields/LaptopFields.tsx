@@ -5,6 +5,10 @@ import { useAppSelector } from "features/hooks/useAppSelector";
 import styles from './LaptopFields.module.scss';
 import { MyButton } from "shared/ui/Button";
 import { LaptopTypes } from "entities/products/model/types/LaptopType"
+import { universalHandleBrandSelect } from "features/functionForFields/handleBrandSelect";
+import { universalHandleChange } from "features/functionForFields/handleChange";
+import { universalHandleImages } from "features/functionForFields/handleImages";
+import { universalHandleSpecificationChange } from "features/functionForFields/handleSpecificationChange";
 
 interface LatopFields {
 	className?: string;
@@ -23,7 +27,6 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 		specifications: [
 			{ name: "processor", value: '' },
 			{ name: "graphics card", value: '' },
-			{ name: "operating system", value: '' },
 			{ name: "storage", value: '' },
 			{ name: "ram", value: '' },
 			{ name: "ports and connectors", value: '' },
@@ -49,49 +52,6 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 	const [priceError, setPriceError] = useState<string>("");
 	const [modelError, setModelError] = useState<string>("");
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		setLaptop(prevState => ({
-			...prevState,
-			[name]: value
-		}));
-	};
-
-	const handleImages = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const imagesString = e.target.value;
-		const imagesArray = imagesString.split(" ").filter((url) => {
-			const urlPattern = /^((http|https):\/\/)/;
-			return urlPattern.test(url);
-		});
-		setLaptop(prev => ({
-			...prev,
-			images: imagesArray
-		}))
-	};
-
-
-	const handleBrandSelect = (brand: string) => {
-		setLaptop(prev => ({
-			...prev,
-			brand
-		}))
-		setSelectedBrand(brand)
-	};
-
-	const handleSpecificationChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
-		const value = e.target.value;
-		const updatedSpecifications = laptop.specifications.map(spec => {
-			if (spec.name === name) {
-				return { ...spec, value: value };
-			}
-			return spec;
-		});
-
-		setLaptop(prev => ({
-			...prev,
-			specifications: updatedSpecifications
-		}));
-	};
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -123,7 +83,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 					{laptopBrands.map(brand =>
 						<Dropdown.Item
 							key={brand}
-							onClick={() => handleBrandSelect(brand)}
+							onClick={() => universalHandleBrandSelect(brand, setLaptop, setSelectedBrand)}
 						>
 							{brand}
 						</Dropdown.Item>)}
@@ -135,7 +95,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 					type="text"
 					name="name"
 					value={laptop.name}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setLaptop)}
 				/>
 				{nameError && <div className="text-danger">{nameError}</div>}
 			</FormGroup>
@@ -145,7 +105,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 					type="number"
 					name="price"
 					value={laptop.price}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setLaptop)}
 				/>
 				{priceError && <div className="text-danger">{priceError}</div>}
 			</FormGroup>
@@ -156,7 +116,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 					type="text"
 					name="model"
 					value={laptop.model}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setLaptop)}
 				/>
 				{modelError && <div className="text-danger">{modelError}</div>}
 			</FormGroup>
@@ -166,7 +126,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 					as="textarea"
 					name="description"
 					value={laptop.description}
-					onChange={handleChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleChange(e, setLaptop)}
 				/>
 			</FormGroup>
 			<FormGroup>
@@ -175,7 +135,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 					as="input"
 					type="url"
 					name="images"
-					onChange={handleImages}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleImages(e, setLaptop)}
 				/>
 			</FormGroup>
 
@@ -192,7 +152,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="processorValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'processor')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'processor', setLaptop, laptop)}
 
 					/>
 				</div>
@@ -211,7 +171,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="ramValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'graphics card')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'graphics card', setLaptop, laptop)}
 					/>
 				</div>
 			</FormGroup>
@@ -229,7 +189,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="storageValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'storage')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'storage', setLaptop, laptop)}
 					/>
 				</div>
 			</FormGroup>
@@ -247,7 +207,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="ramValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'ram')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'ram', setLaptop, laptop)}
 					/>
 				</div>
 			</FormGroup>
@@ -265,7 +225,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="displayValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'display')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'display', setLaptop, laptop)}
 					/>
 				</div>
 			</FormGroup>
@@ -283,7 +243,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="batteryValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'battery')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'battery', setLaptop, laptop)}
 					/>
 				</div>
 			</FormGroup>
@@ -301,7 +261,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="portsValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'ports and connectors')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'ports and connectors', setLaptop, laptop)}
 					/>
 				</div>
 			</FormGroup>
@@ -319,7 +279,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="dimensiosValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'dimensions and weight')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'dimensions and weight', setLaptop, laptop)}
 					/>
 				</div>
 			</FormGroup>
@@ -337,7 +297,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="powerValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'power supply unit')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'power supply unit', setLaptop, laptop)}
 					/>
 				</div>
 			</FormGroup>
@@ -355,7 +315,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="screenValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'screen diagonal')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'screen diagonal', setLaptop, laptop)}
 
 					/>
 				</div>
@@ -374,7 +334,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="screnResValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'screen resolution')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'screen resolution', setLaptop, laptop)}
 					/>
 				</div>
 			</FormGroup>
@@ -392,7 +352,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="screnTValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'screen type')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'screen type', setLaptop, laptop)}
 					/>
 				</div>
 			</FormGroup>
@@ -410,7 +370,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="cameraValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'camera')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'camera', setLaptop, laptop)}
 					/>
 				</div>
 			</FormGroup>
@@ -428,7 +388,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="batteryLValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'battery life')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'battery life', setLaptop, laptop)}
 					/>
 				</div>
 			</FormGroup>
@@ -446,7 +406,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="audioValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'audio')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'audio', setLaptop, laptop)}
 					/>
 				</div>
 			</FormGroup>
@@ -464,7 +424,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 						type="text"
 						name="OperatingValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSpecificationChange(e, 'operating system')}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'operating system', setLaptop, laptop)}
 					/>
 				</div>
 			</FormGroup>
