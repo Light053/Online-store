@@ -9,16 +9,19 @@ import { universalHandleSpecificationChange } from "features/functionForFields/h
 import { universalHandleImages } from "features/functionForFields/handleImages";
 import { universalHandleChange } from "features/functionForFields/handleChange";
 import { universalHandleBrandSelect } from "features/functionForFields/handleBrandSelect";
+import { setProdct } from "shared/lib/setProduct/setProduct";
 
 interface DesktopPCtypesProps {
 	className?: string;
-	pcType?: DesktopPCtypes;
+	selectedType?: string;
 	onHide: () => void;
 }
 
-export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, onHide }) => {
+export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, selectedType, onHide }) => {
+	console.log(selectedType);
 	const [pc, setPC] = useState<DesktopPCtypes>({
 		name: "",
+		type: selectedType,
 		price: 0,
 		brand: "",
 		description: "",
@@ -67,6 +70,7 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, pcType, on
 		setNameError("");
 		setPriceError("");
 		setModelError("");
+		setProdct(pc)
 		onHide();
 	};
 

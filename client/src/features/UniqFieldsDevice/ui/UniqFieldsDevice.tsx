@@ -17,22 +17,22 @@ export const UniqFieldsDevice: FC<UniqFieldsDeviceProps> = ({ className, selecte
 
 	if (selectedType === 'Smartphone') {
 		return (
-			<SmartphoneFields onHide={onHide} />
+			<SmartphoneFields onHide={onHide} selectedType={selectedType} />
 		)
 	}
 	else if (selectedType === 'PC') {
 		return (
-			<DesktopPCFields onHide={onHide} />
+			<DesktopPCFields onHide={onHide} selectedType={selectedType} />
 		)
 	}
 	else if (selectedType === 'PlayStation') {
 		return (
-			<PlayStationFields onHide={onHide} />
+			<PlayStationFields onHide={onHide} selectedType={selectedType} />
 		)
 	}
 	else if (selectedType === 'Laptop') {
 		return (
-			<LaptopFields onHide={onHide} />
+			<LaptopFields onHide={onHide} selectedType={selectedType} />
 		)
 	}
 }

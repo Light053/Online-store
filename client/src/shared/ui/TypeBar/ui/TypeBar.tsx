@@ -18,7 +18,7 @@ export const TypeBar: FC<TypeBarProps> = ({ className }) => {
 	const selectedType = useAppSelector(state => state.products.selectedType);
 	const dispatch = useAppDispatch();
 
-	const selectType = (type: TypesType) => {
+	const selectType = (type: string) => {
 		dispatch(setSelectedType(type))
 	}
 
@@ -31,8 +31,8 @@ export const TypeBar: FC<TypeBarProps> = ({ className }) => {
 						key={index}
 						action
 						variant="light"
-						active={type === selectedType}
-						onClick={() => selectType(type)}
+						active={type.name === selectedType.name}
+						onClick={() => selectType(type.name)}
 					>
 						{type.name}
 					</ListGroup.Item>

@@ -2,6 +2,7 @@ import { IUser } from "./IUser";
 
 export interface ProductResponse {
 	name: string;
+	type: string,
 	brand?: string;
 	model?: string;
 	description?: string;

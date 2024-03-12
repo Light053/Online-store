@@ -14,14 +14,17 @@ import { setProdct } from "shared/lib/setProduct/setProduct";
 
 interface SmartphoneFieldsProps {
 	className?: string;
-	SmartphoneType?: SmartphonesTypes;
+	selectedType?: string;
 	onHide: () => void;
 }
 
-export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, SmartphoneType, onHide }) => {
+export const SmartphoneFields: FC<SmartphoneFieldsProps> = ({ className, selectedType, onHide }) => {
+	console.log(selectedType);
+
 	const [smartphone, setSmartphone] = useState<SmartphonesTypes>({
 		name: "",
 		price: 0,
+		type: selectedType,
 		brand: "",
 		description: "",
 		images: [],

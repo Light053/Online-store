@@ -9,7 +9,11 @@ export interface StateTypes {
 	types: TypesType[];
 	isLoading: boolean,
 	error: string,
-	selectedType: {},
-	selectedBrand: {},
-	reviews: ReviewResponse[]
+	selectedType: { name: string, brands: string },
+	selectedBrand: { name: string },
+	reviews: ReviewType,
+	page: number,
+	totalCount: number,
+	limit: number,
+	formSelectedType: string
 }

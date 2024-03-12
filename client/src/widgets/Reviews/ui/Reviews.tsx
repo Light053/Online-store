@@ -7,6 +7,7 @@ import { MyButton } from "shared/ui/Button";
 import { addReview } from "shared/lib/addReview/addReview";
 import { useAppSelector } from "features/hooks/useAppSelector";
 import { useAppDispatch } from "features/hooks/useAppDispatch";
+import { setReview } from "entities/products/model/slice/ProductsSlice";
 
 interface ReviewsProps {
 	className?: string;
@@ -43,6 +44,7 @@ export const Reviews: FC<ReviewsProps> = ({ className, productName }) => {
 		}
 		else {
 			addReview(reviewText, rating, user.username, productName)
+			disptach(setReview({ text: reviewText, username: user.username }))
 			setReviewText('');
 			setRating(0);
 		}

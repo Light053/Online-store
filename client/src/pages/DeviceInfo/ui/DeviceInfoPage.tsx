@@ -37,28 +37,29 @@ export const DeviceInfoPage: FC<DeviceInfoProps> = ({ className }) => {
 		<div className={classNames(styles.DeviceInfo, {}, [className])}>
 			{device && (
 				<>
+
 					<Container className={styles.row1}>
-						<Row>
-							<Col md={4}>
+						<Row className={styles.headerBlock}>
+							<Col xs={12} md={4} className="order-md-0">
 								<Image src={device.images[0]} alt={device.name} fluid className={styles.img} />
 							</Col>
-							<Col className={styles.rating}>
+							<Col xs={12} md={4} className={`text-center ${styles.rating}`}>
 								<div>
 									<p className="d-flex align-items-center justify-content-center "
-										style={{ background: `url(${BigStar}) no-repeat center center `, width: 240, height: 240, backgroundSize: 'cover' }}
-									>
+										style={{ background: `url(${BigStar}) no-repeat center center `, width: 240, height: 240, backgroundSize: 'cover' }}>
 										{device.rating}
 									</p>
 								</div>
-
 							</Col>
-							<Col className={styles.specCol} md={4}>
-								<h2>{device.name}</h2>
-								<p><strong>Brand:</strong> {device.brand}</p>
-								<p><strong>Model:</strong> {device.model}</p>
-								<p><strong>Description:</strong> {device.description}</p>
-								<p><strong>Price:</strong> ${device.price}</p>
-								<Button className={styles.btn} variant="outline-success">Add to Cart</Button>
+							<Col xs={12} md={4} className="order-md-2">
+								<div className={styles.specCol}>
+									<h2>{device.name}</h2>
+									<p><strong>Brand:</strong> {device.brand}</p>
+									<p><strong>Model:</strong> {device.model}</p>
+									<p><strong>Description:</strong> {device.description}</p>
+									<p><strong>Price:</strong> ${device.price}</p>
+									<Button className={styles.btn} variant="outline-success">Add to Cart</Button>
+								</div>
 							</Col>
 						</Row>
 					</Container>

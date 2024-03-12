@@ -9,16 +9,19 @@ import { universalHandleBrandSelect } from "features/functionForFields/handleBra
 import { universalHandleChange } from "features/functionForFields/handleChange";
 import { universalHandleImages } from "features/functionForFields/handleImages";
 import { universalHandleSpecificationChange } from "features/functionForFields/handleSpecificationChange";
+import { setProdct } from "shared/lib/setProduct/setProduct";
 
 interface LatopFields {
 	className?: string;
-	laptopType?: LaptopTypes;
+	selectedType?: string;
 	onHide: () => void;
 }
 
-export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide }) => {
+export const LaptopFields: FC<LatopFields> = ({ className, selectedType, onHide }) => {
+	console.log(selectedType);
 	const [laptop, setLaptop] = useState<LaptopTypes>({
 		name: "",
+		type: selectedType,
 		price: 0,
 		brand: "",
 		description: "",
@@ -72,6 +75,7 @@ export const LaptopFields: FC<LatopFields> = ({ className, laptopType, onHide })
 		setNameError("");
 		setPriceError("");
 		setModelError("");
+		setProdct(laptop)
 		onHide();
 	};
 

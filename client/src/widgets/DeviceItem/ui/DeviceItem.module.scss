@@ -6,11 +6,12 @@
 	color: var(--primary-color);
 	margin-right: 15px;
 	max-height: 400px;
+	min-height: 400px;
 	overflow: hidden;
 
 	.cardImg {
 		height: 170px;
-		object-fit: cover;
+		object-fit: contain;
 		margin-bottom: 15px;
 	}
 

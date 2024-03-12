@@ -5,6 +5,7 @@ import { SmartphonesTypes } from "../types/smartphonesType";
 import { BrandTypes } from "../types/brandsType";
 import { TypesType } from "../types/typesType";
 import { ReviewResponse } from "app/models/response/ReviewResponse";
+import { ReviewType } from "../types/reviewType";
 
 const initialState: StateTypes = {
 	smartphones: [],
@@ -17,26 +18,41 @@ const initialState: StateTypes = {
 
 	isLoading: false,
 	error: '',
-	selectedType: {},
-	selectedBrand: {},
-	reviews: []
+	selectedType: { name: "Smartphone", brands: "" },
+	selectedBrand: { name: "" },
+	reviews: { text: "", username: "" },
+	page: 1,
+	limit: 3,
+	totalCount: 0,
+	formSelectedType: ''
 }
 
 export const ProductsSlice = createSlice({
 	name: 'products',
 	initialState,
 	reducers: {
-		setSelectedType: (state: StateTypes, action: PayloadAction<TypesType>) => {
-			state.selectedType = action.payload
+		setSelectedType: (state: StateTypes, action) => {
+			state.selectedType.name = action.payload;
+			state.selectedBrand = { name: '' };
 		},
 		setSelectedBrand: (state: StateTypes, action: PayloadAction<BrandTypes>) => {
 			state.selectedBrand = action.payload
 		},
-		setReview: (state: StateTypes, action: PayloadAction<ReviewResponse[]>) => {
-			state.reviews.push(...action.payload)
+		setReview: (state: StateTypes, action: PayloadAction<ReviewType>) => {
+			state.reviews = action.payload
 		},
 		clearSmartphones: (state: StateTypes) => {
 			state.smartphones = [];
+		},
+		setPage: (state: StateTypes, action) => {
+			state.page = action.payload;
+		},
+		setTotalCount: (state: StateTypes, action) => {
+			state.totalCount = action.payload;
+			console.log(state.totalCount);
+		},
+		setFormSelectedType: (state: StateTypes, action) => {
+			state.formSelectedType = action.payload
 		}
 	},
 	extraReducers: (builder) => {
@@ -55,5 +71,5 @@ export const ProductsSlice = createSlice({
 			});
 	}
 });
-export const { setSelectedType, setSelectedBrand, clearSmartphones, setReview } = ProductsSlice.actions
+export const { setSelectedType, setSelectedBrand, clearSmartphones, setReview, setPage, setTotalCount, setFormSelectedType } = ProductsSlice.actions
 export const ProductsReducer = ProductsSlice.reducer

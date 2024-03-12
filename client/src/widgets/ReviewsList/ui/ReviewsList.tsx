@@ -7,7 +7,7 @@ import { Row, Col } from "react-bootstrap";
 import { ReviewItem } from "shared/ui/ReviewItem";
 import { useAppSelector } from "features/hooks/useAppSelector";
 import { useAppDispatch } from "features/hooks/useAppDispatch";
-import { setReview } from "entities/products/model/slice/ProductsSlice";
+import { addReview } from "shared/lib/addReview/addReview";
 
 interface ReviewsListProps {
 	className?: string;
@@ -23,11 +23,11 @@ export const ReviewsList: FC<ReviewsListProps> = ({ className, productName }) =>
 		const fetchReviews = async () => {
 			const reviews = await getReviews(productName);
 			setReviews(reviews);
-			disptach(setReview(reviews))
 		};
 
 		fetchReviews();
-	}, [disptach]);
+	}, []);
+
 
 	return (
 		<div className={classNames(styles.ReviewsList)}>

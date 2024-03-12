@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, useMemo } from "react"
 import { classNames } from "shared/lib/class-names/class-names"
 import styles from './BrandBar.module.scss'
 import { useAppSelector } from "features/hooks/useAppSelector"
@@ -14,6 +14,7 @@ interface BrandBarProps {
 
 export const BrandBar: FC<BrandBarProps> = ({ className }) => {
 	const types = useAppSelector(state => state.products.types);
+	const selectedType = useAppSelector(state => state.products.selectedType)
 	const dispatch = useAppDispatch();
 
 	const allBrands = types.reduce((acc, type) => {
@@ -21,7 +22,6 @@ export const BrandBar: FC<BrandBarProps> = ({ className }) => {
 	}, []);
 
 	const uniqueBrands = Array.from(new Set(allBrands));
-	console.log(uniqueBrands);
 
 	const selectedBrand = useAppSelector(state => state.products.selectedBrand);
 
@@ -29,14 +29,23 @@ export const BrandBar: FC<BrandBarProps> = ({ className }) => {
 		dispatch(setSelectedBrand(brand));
 	}
 
+	const deviceBrands = useMemo(() => {
+		//@ts-ignore
+		const selectedTypeName = selectedType.name;
+		const selectedTypeBrands = types.find(type => type.name === selectedTypeName);
+
+		return selectedTypeBrands.brands;
+	}, [selectedType, types]);
+	console.log(selectedBrand);
+
 	return (
 		<Row className={classNames(styles.BrandBar, {}, [className, "d-flex mt-3"])}>
-			{uniqueBrands.map((brand, index) =>
+			{deviceBrands.map((brand, index) =>
 				<Card
 					className={classNames(styles.cardItem, {}, ["p-3 mt-1"])}
 					key={index}
-					border={brand === selectedBrand ? "light" : "dark"}
-					onClick={() => selectBrand(brand)}
+					border={brand === selectedBrand.name ? "light" : "dark"}
+					onClick={() => selectBrand({ name: brand })}
 				>
 					{brand}
 				</Card>

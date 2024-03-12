@@ -9,16 +9,20 @@ import { universalHandleBrandSelect } from "features/functionForFields/handleBra
 import { universalHandleChange } from "features/functionForFields/handleChange";
 import { universalHandleSpecificationChange } from "features/functionForFields/handleSpecificationChange";
 import { universalHandleImages } from "features/functionForFields/handleImages";
+import { setProdct } from "shared/lib/setProduct/setProduct";
 
 interface PlayStationFieldsProps {
 	className?: string;
-	pcType?: PlayStationTypes;
+	selectedType?: string;
 	onHide: () => void;
 }
 
-export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcType, onHide }) => {
+export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, selectedType, onHide }) => {
+	console.log(selectedType);
+
 	const [playStation, setPlayStation] = useState<PlayStationTypes>({
 		name: "",
+		type: selectedType,
 		price: 0,
 		brand: "",
 		description: "",
@@ -66,6 +70,7 @@ export const PlayStationFields: FC<PlayStationFieldsProps> = ({ className, pcTyp
 		setNameError("");
 		setPriceError("");
 		setModelError("");
+		setProdct(playStation)
 		onHide();
 	};
 

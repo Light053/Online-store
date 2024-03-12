@@ -2,6 +2,7 @@ import { IUser } from "app/models/response/IUser";
 
 export interface DesktopPCtypes {
 	name: string;
+	type: string
 	brand?: string;
 	model?: string;
 	description?: string;

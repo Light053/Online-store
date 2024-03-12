@@ -9,8 +9,8 @@ export default class ProductApi {
 		return $apiProducts.post('setProduct', product)
 	}
 
-	static async getProducts(limit: number = 9, page: number = 1): Promise<AxiosResponse<ProductResponse[]>> {
-		const url = `/products?limit=${limit}&page=${page}`;
+	static async getProducts(limit: number = 9, page: number = 1, type = 'Smartphone', brand = ''): Promise<AxiosResponse<ProductResponse[]>> {
+		const url = `/products?type=${type}&brand=${brand}&limit=${limit}&page=${page}`;
 		return $apiProducts.get<ProductResponse[]>(url);
 	}
 
@@ -22,8 +22,6 @@ export default class ProductApi {
 			review: reviewText,
 			rating
 		}
-		console.log('url', url);
-
 		return $apiProducts.post<ProductResponse>(url, config)
 	}
 

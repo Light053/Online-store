@@ -1,7 +1,8 @@
-import SmartPhonesApi from "app/service/ProductService/Smartphones/SmartphonesApi"
+import ProductApi from "app/service/ProductService/ProductApi";
+
 
 export const setProdct = (product: unknown) => {
-	const req = SmartPhonesApi.setProduct(product);
+	const req = ProductApi.setProduct(product);
 	console.log(req);
 
 }

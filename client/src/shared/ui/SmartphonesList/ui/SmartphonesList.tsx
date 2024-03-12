@@ -6,7 +6,7 @@ import { useAppDispatch } from "features/hooks/useAppDispatch";
 import { fetchSmartphones } from "entities/products/model/actionsCreatots";
 import { Row, Spinner, Col } from "react-bootstrap";
 import { DeviceItem } from "widgets/DeviceItem/ui/DeviceItem";
-import { clearSmartphones } from "entities/products/model/slice/ProductsSlice";
+import { clearSmartphones, setTotalCount } from "entities/products/model/slice/ProductsSlice";
 
 interface SmartphonesListProps {
 	className?: string;
@@ -15,15 +15,23 @@ interface SmartphonesListProps {
 export const SmartphonesList: FC<SmartphonesListProps> = ({ className }) => {
 	const smartphones = useAppSelector(state => state.products.smartphones);
 	const isLoading = useAppSelector(state => state.products.isLoading);
+	const page = useAppSelector(state => state.products.page);
+	const limit = useAppSelector(state => state.products.limit);
+	const selectedType = useAppSelector(state => state.products.selectedType);
+	const selectedBrands = useAppSelector(state => state.products.selectedBrand)
+	const type = selectedType.name;
+	const brand = selectedBrands.name
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		const fetchApi = async () => {
 			dispatch(clearSmartphones());
-			dispatch(fetchSmartphones());
+			await dispatch(fetchSmartphones({ type, brand })).then(result => dispatch(setTotalCount(smartphones.length)));
+
+			console.log(smartphones.length);
 		};
-		fetchApi();
-	}, []);
+		fetchApi()
+	}, [type, brand]);
 
 	if (isLoading) {
 		return <div className={styles.spinner}><Spinner /></div>;
