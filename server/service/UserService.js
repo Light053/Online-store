@@ -1,4 +1,4 @@
-const User = require('../models/userModels/User')
+const { User, Basket } = require('../models/userModels/User')
 const Role = require('../models/userModels/Role')
 const bcrypt = require('bcrypt');
 const TokenService = require('../service/TokenService')
@@ -15,7 +15,10 @@ class UserService {
 			}
 
 			const hashPassword = await bcrypt.hash(password, 5);
-			const user = await User.create({ username, password: hashPassword, roles: 'ADMIN' });
+
+			const basket = await Basket.create({ items: [], totalPrice: 0 });
+
+			const user = await User.create({ username, password: hashPassword, basket: basket._id, roles: 'ADMIN' });
 
 			const userDto = new UserDto(user);
 

@@ -5,6 +5,29 @@ const ProductService = require("../service/ProductService");
 
 class ProductController {
 
+	async craeteUserBasket(req, res, next) {
+		try {
+			const { username } = req.body
+
+			const basket = await ProductService.createUserBasket(username);
+
+			res.status(200).json(basket)
+		} catch (error) {
+			next(ApiError.badRequest(error.message))
+		}
+	}
+
+	async setItemBasket(req, res, next) {
+		try {
+			const { productName, username, countItems } = req.body
+			const { user, basket } = await ProductService.setItemBasket(productName, username, countItems);
+
+			res.status(200).json({ user: user, basket: basket })
+		} catch (error) {
+			next(ApiError.badRequest(error.message))
+		}
+	}
+
 	async setProduct(req, res, next) {
 		try {
 			const productData = await ProductService.setProduct(req);
@@ -59,6 +82,16 @@ class ProductController {
 			res.status(200).json(products);
 		} catch (error) {
 			console.log(error);
+			next(ApiError.badRequest(error.message))
+		}
+	}
+
+	async getProductsFromBasket(req, res, next) {
+		try {
+			const { username } = req.query
+			const products = await ProductService.getProductsFromUserBasket(username);
+			res.status(200).json(products);
+		} catch (error) {
 			next(ApiError.badRequest(error.message))
 		}
 	}

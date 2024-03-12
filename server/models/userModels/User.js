@@ -1,18 +1,22 @@
 const { Schema, model } = require('mongoose');
 
-const User = new Schema({
-	username: { type: String, unique: true, required: true },
-	password: { type: String, required: true },
-	roles: [{ type: String, ref: "Role" }]
-})
-
-const Busket = new Schema({
-	username: { type: String, unique: true, required: true },
+const Basket = new Schema({
+	user: { type: Schema.Types.ObjectId, ref: 'User' },
+	username: { type: String },
 	items: [{
 		itemId: { type: Schema.Types.ObjectId, ref: 'Item' },
 		quantity: { type: Number, default: 1 },
 	}],
 	totalPrice: { type: Number, default: 0 },
-})
+});
+const User = new Schema({
+	username: { type: String, unique: true, required: true },
+	password: { type: String, required: true },
+	basket: { type: Basket },
+	roles: [{ type: String, ref: "Role" }]
+});
 
-module.exports = model('User', User);
+module.exports = {
+	User: model('User', User),
+	Basket: model('Basket', Basket)
+};
