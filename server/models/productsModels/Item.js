@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const ItemSchema = new Schema({
 	name: { type: String, required: true },
+	type: String,
 	brand: String,
 	model: String,
 	description: String,
@@ -16,11 +17,12 @@ const ItemSchema = new Schema({
 	rating: { type: Number, default: 5 },
 	reviews: [{
 		user: { type: Schema.Types.ObjectId, ref: 'User' },
+		username: String,
 		text: String,
 		rating: Number,
 		createdAt: { type: Date, default: Date.now }
 	}],
-	availability: { type: String, default: 'в наличии' }
+	availability: { type: String, default: 'in stock' }
 });
 
 

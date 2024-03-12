@@ -17,16 +17,14 @@ class ProductController {
 
 	async addReview(req, res, next) {
 		try {
-			const { review, productName, userName } = req.body;
-
-			const user = await User.findOne({ username: userName });
+			const { review, productName, rating, username } = req.body;
 			const product = await Item.findOne({ name: productName });
 
 			if (!product) {
 				return res.status(404).json({ error: "Продукт не найден" });
 			}
 
-			const updatedProduct = await ProductService.addReview(product, review, user._id);
+			const updatedProduct = await ProductService.addReview(product, review, username, rating,);
 
 			console.log('отзыв добавлен');
 			res.status(200).json(updatedProduct);
@@ -37,7 +35,9 @@ class ProductController {
 
 	async getProduct(req, res, next) {
 		try {
-			const { name } = req.body;
+
+			const { name } = req.query;
+			console.log('in get product, name = ', name);
 			const products = await ProductService.getProduct(name);
 
 			res.status(200).json(products);
@@ -49,14 +49,26 @@ class ProductController {
 
 	async getProducts(req, res, next,) {
 		try {
-			let { limit, page } = req.query
+			let { limit, page, type, brand } = req.query
 			page = page || 1;
 			limit = limit || 9;
 			let offset = page * limit - limit
 
-			const products = await ProductService.getProducts(limit, offset)
+			const products = await ProductService.getProducts(limit, offset, type, brand)
 
 			res.status(200).json(products);
+		} catch (error) {
+			console.log(error);
+			next(ApiError.badRequest(error.message))
+		}
+	}
+
+	async getReviews(req, res, next) {
+		try {
+			const { name } = req.query;
+			console.log('get reviews:', name);
+			const reviews = await ProductService.getReviews(name)
+			res.status(200).json(reviews)
 		} catch (error) {
 			console.log(error);
 			next(ApiError.badRequest(error.message))

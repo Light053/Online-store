@@ -8,4 +8,5 @@ router.post('/setProduct', productValidationRules(), validate, productController
 router.post('/addReview', addReviewValidationRules(), validate, productController.addReview);
 router.get('/products', productController.getProducts);
 router.get('/product', getProductValidationRules(), validate, productController.getProduct);
+router.get('/reviews', productController.getReviews)
 module.exports = router
