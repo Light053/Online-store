@@ -4,8 +4,8 @@ import { IUser } from "app/models/response/IUser";
 
 const initialState: User = {
 	isAuth: false,
-	user: null,
-	error: null
+	user: { username: '', id: '', password: '' },
+	error: null,
 }
 
 export const userSlice = createSlice({
@@ -19,10 +19,7 @@ export const userSlice = createSlice({
 		userLoginSuccess: (state, action: PayloadAction<IUser>) => {
 			state.error = '';
 			state.user = action.payload;
-			console.log('llllll', state.user);
-
 			state.isAuth = true;
-			console.log(state.isAuth);
 		},
 		userLoginError: (state, action) => {
 			state.error = action.payload
@@ -71,6 +68,10 @@ export const userSlice = createSlice({
 		userCheckAuthError: (state, action) => {
 			state.error = action.payload
 		},
+
+		//products quantiy
+
+
 	},
 
 })

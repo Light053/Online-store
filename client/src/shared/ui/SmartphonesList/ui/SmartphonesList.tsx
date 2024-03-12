@@ -1,12 +1,13 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { classNames } from "shared/lib/class-names/class-names";
 import styles from './SmartphonesList.module.scss';
 import { useAppSelector } from "features/hooks/useAppSelector";
 import { useAppDispatch } from "features/hooks/useAppDispatch";
-import { fetchSmartphones } from "entities/products/model/actionsCreatots";
+import { fetchProducts, fetchProductsFromBasket } from "entities/products/model/actionsCreatots";
 import { Row, Spinner, Col } from "react-bootstrap";
 import { DeviceItem } from "widgets/DeviceItem/ui/DeviceItem";
 import { clearSmartphones, setTotalCount } from "entities/products/model/slice/ProductsSlice";
+import { setItemBasket } from "shared/lib/setItemBasket/setItemBasket";
 
 interface SmartphonesListProps {
 	className?: string;
@@ -19,6 +20,7 @@ export const SmartphonesList: FC<SmartphonesListProps> = ({ className }) => {
 	const limit = useAppSelector(state => state.products.limit);
 	const selectedType = useAppSelector(state => state.products.selectedType);
 	const selectedBrands = useAppSelector(state => state.products.selectedBrand)
+
 	const type = selectedType.name;
 	const brand = selectedBrands.name
 	const dispatch = useAppDispatch();
@@ -26,11 +28,10 @@ export const SmartphonesList: FC<SmartphonesListProps> = ({ className }) => {
 	useEffect(() => {
 		const fetchApi = async () => {
 			dispatch(clearSmartphones());
-			await dispatch(fetchSmartphones({ type, brand })).then(result => dispatch(setTotalCount(smartphones.length)));
-
-			console.log(smartphones.length);
+			dispatch(fetchProducts({ type, brand })).then(result => dispatch(setTotalCount(smartphones.length)));
 		};
 		fetchApi()
+
 	}, [type, brand]);
 
 	if (isLoading) {

@@ -9,6 +9,11 @@ export default class ProductApi {
 		return $apiProducts.post('setProduct', product)
 	}
 
+	static async setItemBasket(productName: string, username: string = 'Light', countItems: number = 1): Promise<AxiosResponse<ProductResponse[]>> {
+		const data = { productName, username, countItems };
+		return $apiProducts.post('basket', data);
+	}
+
 	static async getProducts(limit: number = 9, page: number = 1, type = 'Smartphone', brand = ''): Promise<AxiosResponse<ProductResponse[]>> {
 		const url = `/products?type=${type}&brand=${brand}&limit=${limit}&page=${page}`;
 		return $apiProducts.get<ProductResponse[]>(url);
@@ -43,5 +48,15 @@ export default class ProductApi {
 			}
 		};
 		return $apiProducts.get<ReviewResponse[]>(url, config)
+	}
+
+	static async getProductsFromBasket(username: string) {
+		const url = '/basketProducts';
+		const config = {
+			params: {
+				username
+			}
+		}
+		return $apiProducts.get(url, config);
 	}
 }

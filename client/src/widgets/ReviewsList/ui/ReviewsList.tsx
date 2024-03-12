@@ -7,7 +7,6 @@ import { Row, Col } from "react-bootstrap";
 import { ReviewItem } from "shared/ui/ReviewItem";
 import { useAppSelector } from "features/hooks/useAppSelector";
 import { useAppDispatch } from "features/hooks/useAppDispatch";
-import { addReview } from "shared/lib/addReview/addReview";
 
 interface ReviewsListProps {
 	className?: string;

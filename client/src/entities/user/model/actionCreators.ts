@@ -70,4 +70,3 @@ export const checkAuth = () => async (dispatch: AppDispatch) => {
 		dispatch(userSlice.actions.userCheckAuthError(error.response.data.errors))
 	}
 }
-

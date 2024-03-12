@@ -1,14 +1,14 @@
-import { PayloadAction, createAsyncThunk, createSlice, ActionReducerMapBuilder } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { StateTypes } from "../types/stateType";
-import { fetchSmartphones } from "../actionsCreatots";
+import { fetchProducts, fetchProductsFromBasket } from "../actionsCreatots";
 import { SmartphonesTypes } from "../types/smartphonesType";
 import { BrandTypes } from "../types/brandsType";
-import { TypesType } from "../types/typesType";
-import { ReviewResponse } from "app/models/response/ReviewResponse";
 import { ReviewType } from "../types/reviewType";
+import { productsQuanityType } from "../types/productsQuanityType";
 
 const initialState: StateTypes = {
 	smartphones: [],
+	productsFromBasket: [],
 	types: [
 		{ name: "Smartphone", brands: ["Apple", "Samsung", "Google", "Huawei", "Xiaomi", "OnePlus", "LG", "Sony", "Motorola"] },
 		{ name: "PC", brands: ["Dell", "HP", "Lenovo", "Asus", "Acer", "Apple", "MSI"] },
@@ -24,7 +24,8 @@ const initialState: StateTypes = {
 	page: 1,
 	limit: 3,
 	totalCount: 0,
-	formSelectedType: ''
+	formSelectedType: '',
+	productsQuanity: []
 }
 
 export const ProductsSlice = createSlice({
@@ -44,6 +45,9 @@ export const ProductsSlice = createSlice({
 		clearSmartphones: (state: StateTypes) => {
 			state.smartphones = [];
 		},
+		clearBasket: (state: StateTypes) => {
+			state.productsFromBasket = [];
+		},
 		setPage: (state: StateTypes, action) => {
 			state.page = action.payload;
 		},
@@ -53,23 +57,48 @@ export const ProductsSlice = createSlice({
 		},
 		setFormSelectedType: (state: StateTypes, action) => {
 			state.formSelectedType = action.payload
+		},
+		setProductsQuantity: (state: StateTypes, action: PayloadAction<productsQuanityType>) => {
+			const { name, quantity } = action.payload;
+			const productToUpdate = state.productsQuanity.find(product => product.name === name);
+			if (productToUpdate) {
+				productToUpdate.quantity += quantity;
+			} else {
+				state.productsQuanity.push({ name, quantity });
+			}
 		}
+
 	},
 	extraReducers: (builder) => {
-		builder.addCase(fetchSmartphones.fulfilled, (state: StateTypes, action: PayloadAction<SmartphonesTypes[]>) => {
+		builder.addCase(fetchProducts.fulfilled, (state: StateTypes, action: PayloadAction<SmartphonesTypes[]>) => {
 			state.isLoading = false;
 			state.error = '';
 			state.smartphones.push(...action.payload);
 		})
-			.addCase(fetchSmartphones.pending, (state: StateTypes) => {
+			.addCase(fetchProducts.pending, (state: StateTypes) => {
 				state.isLoading = true;
 				state.error = '';
 			})
-			.addCase(fetchSmartphones.rejected, (state: StateTypes, action) => {
+			.addCase(fetchProducts.rejected, (state: StateTypes, action) => {
+				state.isLoading = false;
+				state.error = action.payload.toString();
+			});
+		builder.addCase(fetchProductsFromBasket.fulfilled, (state: StateTypes, action: PayloadAction<SmartphonesTypes[]>) => {
+			state.error = '';
+			state.isLoading = false;
+			state.productsFromBasket = action.payload;
+		})
+			.addCase(fetchProductsFromBasket.pending, (state: StateTypes) => {
+				state.isLoading = true;
+				state.error = '';
+			})
+			.addCase(fetchProductsFromBasket.rejected, (state: StateTypes, action) => {
 				state.isLoading = false;
 				state.error = action.payload.toString();
 			});
 	}
 });
-export const { setSelectedType, setSelectedBrand, clearSmartphones, setReview, setPage, setTotalCount, setFormSelectedType } = ProductsSlice.actions
+export const {
+	setSelectedType, setSelectedBrand, clearSmartphones, setReview, setPage, setTotalCount, setFormSelectedType, clearBasket, setProductsQuantity
+} = ProductsSlice.actions
 export const ProductsReducer = ProductsSlice.reducer
