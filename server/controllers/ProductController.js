@@ -44,12 +44,10 @@ class ProductController {
 			const product = await Item.findOne({ name: productName });
 
 			if (!product) {
-				return res.status(404).json({ error: "Продукт не найден" });
+				next(ApiError.badRequest("Product not found"))
 			}
-
+			console.log('in server', username);
 			const updatedProduct = await ProductService.addReview(product, review, username, rating,);
-
-			console.log('отзыв добавлен');
 			res.status(200).json(updatedProduct);
 		} catch (error) {
 			next(error);
