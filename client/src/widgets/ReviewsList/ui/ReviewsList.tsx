@@ -16,7 +16,6 @@ interface ReviewsListProps {
 export const ReviewsList: FC<ReviewsListProps> = ({ className, productName }) => {
 	const [reviews, setReviews] = useState<ReviewResponse[]>([]);
 	const storeReview = useAppSelector(state => state.products.reviews)
-	const disptach = useAppDispatch();
 
 	useEffect(() => {
 		const fetchReviews = async () => {
@@ -25,8 +24,8 @@ export const ReviewsList: FC<ReviewsListProps> = ({ className, productName }) =>
 		};
 
 		fetchReviews();
-	}, []);
-
+	}, [storeReview]);
+	console.log('storeReview', storeReview);
 
 	return (
 		<div className={classNames(styles.ReviewsList)}>

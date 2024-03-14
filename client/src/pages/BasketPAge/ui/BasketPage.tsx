@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react"
+import { FC, useEffect, useState } from "react"
 import { classNames } from "shared/lib/class-names/class-names"
 import styles from './BasketPage.module.scss'
 import { Col, Container, Row, Spinner } from "react-bootstrap"
@@ -16,16 +16,16 @@ interface BasketPageProps {
 export const BasketPage: FC<BasketPageProps> = ({ className }) => {
 	const products = useAppSelector(state => state.products.productsFromBasket);
 	const isLoading = useAppSelector(state => state.products.isLoading)
+	const productsQuantity = useAppSelector(state => state.products.productsQuanity)
 	const dispatch = useAppDispatch()
 
 	const username = useAppSelector(state => getUsername(state));
 
 	useEffect(() => {
-		function fetchProducts() {
-			dispatch(clearBasket());
+		async function fetchProducts() {
 			dispatch(fetchProductsFromBasket({ username }));
 		}
-		fetchProducts();
+		fetchProducts()
 	}, [])
 
 	if (isLoading) {

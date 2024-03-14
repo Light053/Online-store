@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { StateTypes } from "../types/stateType";
-import { fetchProducts, fetchProductsFromBasket } from "../actionsCreatots";
+import { craeteUserBasket, fetchProducts, fetchProductsFromBasket } from "../actionsCreatots";
 import { SmartphonesTypes } from "../types/smartphonesType";
 import { BrandTypes } from "../types/brandsType";
 import { ReviewType } from "../types/reviewType";
@@ -20,7 +20,7 @@ const initialState: StateTypes = {
 	error: '',
 	selectedType: { name: "Smartphone", brands: "" },
 	selectedBrand: { name: "" },
-	reviews: { text: "", username: "" },
+	reviews: [],
 	page: 1,
 	limit: 3,
 	totalCount: 0,
@@ -39,8 +39,11 @@ export const ProductsSlice = createSlice({
 		setSelectedBrand: (state: StateTypes, action: PayloadAction<BrandTypes>) => {
 			state.selectedBrand = action.payload
 		},
-		setReview: (state: StateTypes, action: PayloadAction<ReviewType>) => {
-			state.reviews = action.payload
+		setReview: (state: StateTypes, action: PayloadAction<ReviewType[]>) => {
+			state.reviews.push(...action.payload)
+		},
+		clearReviews: (state: StateTypes) => {
+			state.reviews = [];
 		},
 		clearSmartphones: (state: StateTypes) => {
 			state.smartphones = [];
@@ -96,9 +99,31 @@ export const ProductsSlice = createSlice({
 				state.isLoading = false;
 				state.error = action.payload.toString();
 			});
+
+		builder.addCase(craeteUserBasket.fulfilled, (state: StateTypes) => {
+			state.error = '';
+			state.isLoading = false;
+		})
+			.addCase(craeteUserBasket.pending, (state: StateTypes) => {
+				state.isLoading = true;
+				state.error = '';
+			})
+			.addCase(craeteUserBasket.rejected, (state: StateTypes, action) => {
+				state.isLoading = false;
+				state.error = String(action.payload)
+			});
 	}
 });
 export const {
-	setSelectedType, setSelectedBrand, clearSmartphones, setReview, setPage, setTotalCount, setFormSelectedType, clearBasket, setProductsQuantity
+	setSelectedType,
+	setSelectedBrand,
+	clearSmartphones,
+	setReview,
+	setPage,
+	setTotalCount,
+	setFormSelectedType,
+	clearBasket,
+	setProductsQuantity,
+	clearReviews
 } = ProductsSlice.actions
 export const ProductsReducer = ProductsSlice.reducer

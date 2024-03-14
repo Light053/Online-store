@@ -35,3 +35,17 @@ export const fetchProductsFromBasket = createAsyncThunk(
 		}
 	}
 )
+
+export const craeteUserBasket = createAsyncThunk(
+	'products/craeteUserBasket',
+	async ({ username }: { username: string }) => {
+		try {
+			console.log('username', username);
+			const response = await ProductApi.createUserBasket(username)
+			localStorage.setItem('basket', JSON.stringify(response));
+			return response.data;
+		} catch (error) {
+			throw error;
+		}
+	}
+)

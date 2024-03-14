@@ -27,6 +27,7 @@ export default class ProductApi {
 			review: reviewText,
 			rating
 		}
+		console.log('in add review in api:', username);
 		return $apiProducts.post<ProductResponse>(url, config)
 	}
 
@@ -58,5 +59,12 @@ export default class ProductApi {
 			}
 		}
 		return $apiProducts.get(url, config);
+	}
+
+	static async createUserBasket(username: string) {
+		console.log('username', username);
+		const data = { username }
+		const url = '/createBasket';
+		return $apiProducts.post(url, data);
 	}
 }

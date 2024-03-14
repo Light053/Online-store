@@ -1,17 +1,19 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import styles from './NavBar.module.scss';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useNavigate } from "react-router-dom";
 import { RouterPath } from "shared/config/route-config/route-config";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import { useAppSelector } from "features/hooks/useAppSelector";
 import { logout } from "entities/user/model/actionCreators";
 import { useAppDispatch } from "features/hooks/useAppDispatch";
 import { MyButton } from "shared/ui/Button";
 import Basket from 'shared/assets/Basket.svg'
 import { classNames } from "shared/lib/class-names/class-names";
+import { craeteUserBasket } from "entities/products/model/actionsCreatots";
+import { getUsername } from "entities/user/model/selectors/getUsername";
 
 interface NavBarProps {
 	className?: string;
@@ -19,11 +21,16 @@ interface NavBarProps {
 
 const NavBar: FC<NavBarProps> = ({ className }) => {
 	const isAuth = useAppSelector(state => state.user.isAuth);
+	const isLoading = useAppSelector(state => state.products.isLoading)
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
-	const checkAuth = () => {
+
+	const checkAuth = async () => {
 		if (isAuth) {
 			navigate('/');
+		}
+		else {
+			navigate(RouterPath.authorization)
 		}
 	}
 
@@ -41,46 +48,50 @@ const NavBar: FC<NavBarProps> = ({ className }) => {
 	}
 
 	const handleBasket = () => {
-		navigate(RouterPath.basket)
+		navigate(RouterPath.basket);
 	}
 
-	console.log(isAuth);
 
 	return (
 		<Navbar className={styles.Navbar}>
 			<Container>
 				<Button variant="outline-dark" className={styles.brand} onClick={checkAuth}>BuyDevice</Button>
-				{isAuth ?
-					<Nav className="ml-auto">
-						<MyButton
-							className={styles.link}
-							onClick={handleAdminPanel}
-						>
-							Admin Panel
-						</MyButton>
-						<MyButton
-							className={styles.link}
-							onClick={handleLogout}
-						>
-							Exit
-						</MyButton>
-						<MyButton
-							className={classNames(styles.basket, {}, [])}
-							onClick={handleBasket}
-						>
-							<Basket width={30} height={30} />
-						</MyButton>
-					</Nav>
-					:
-					<Nav className="ml-auto">
-						<MyButton
-							className={styles.link}
-							onClick={handleAuth}
-						>
-							Authorization
-						</MyButton>
-					</Nav>
-				}
+				{isLoading ? (
+					<Spinner />
+				) : (
+					isAuth ? (
+						<Nav className="ml-auto">
+							<MyButton
+								className={styles.link}
+								onClick={handleAdminPanel}
+							>
+								Admin Panel
+							</MyButton>
+							<MyButton
+								className={styles.link}
+								onClick={handleLogout}
+							>
+								Exit
+							</MyButton>
+							<MyButton
+								className={classNames(styles.basket, {}, [])}
+								onClick={handleBasket}
+							>
+								<Basket width={30} height={30} />
+							</MyButton>
+						</Nav>
+					) : (
+						<Nav className="ml-auto">
+							<MyButton
+								className={styles.link}
+								onClick={handleAuth}
+							>
+								Authorization
+							</MyButton>
+						</Nav>
+					)
+				)}
+
 			</Container>
 		</Navbar>
 	);

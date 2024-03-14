@@ -68,10 +68,6 @@ export const userSlice = createSlice({
 		userCheckAuthError: (state, action) => {
 			state.error = action.payload
 		},
-
-		//products quantiy
-
-
 	},
 
 })

@@ -7,7 +7,8 @@ import { MyButton } from "shared/ui/Button";
 import { addReview } from "shared/lib/addReview/addReview";
 import { useAppSelector } from "features/hooks/useAppSelector";
 import { useAppDispatch } from "features/hooks/useAppDispatch";
-import { setReview } from "entities/products/model/slice/ProductsSlice";
+import { clearReviews, setReview } from "entities/products/model/slice/ProductsSlice";
+import React from "react";
 
 interface ReviewsProps {
 	className?: string;
@@ -18,11 +19,12 @@ export const Reviews: FC<ReviewsProps> = ({ className, productName }) => {
 
 	const [reviewError, setReviewError] = useState('')
 	const [reviewText, setReviewText] = useState('');
-
+	const storeReview = useAppSelector(state => state.products.reviews);
 	const [rating, setRating] = useState<number>(0);
 	const [errorRating, setErrorRating] = useState('')
 
-	const user = useAppSelector(state => state.user.user)
+	//@ts-ignore
+	const user = useAppSelector(state => state.user.user.username.username)
 	const disptach = useAppDispatch();
 
 	const handleReviewTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,21 +36,31 @@ export const Reviews: FC<ReviewsProps> = ({ className, productName }) => {
 		setRating(newRating);
 	};
 
-	const handleSubmitReview = (e: React.MouseEvent<HTMLButtonElement>) => {
+	const handleSubmitReview = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		if (reviewText.trim() === '') {
-			setReviewError('Please enter a review')
-		}
-		else if (rating === 0) {
-			setErrorRating('Please rate')
-		}
-		else {
-			addReview(reviewText, rating, user.username, productName)
-			disptach(setReview({ text: reviewText, username: user.username }))
-			setReviewText('');
-			setRating(0);
+			setReviewError('Please enter a review');
+		} else if (rating === 0) {
+			setErrorRating('Please rate');
+		} else {
+			try {
+				disptach(clearReviews())
+				console.log('после чистки:', storeReview);
+				console.log('user', user);
+
+				const reviews = await addReview(reviewText, rating, user, productName);
+				console.log('reviews:', reviews.data.reviews);
+
+				//@ts-ignore
+				disptach(setReview(reviews.data.reviews));
+				setReviewText('');
+				setRating(0);
+			} catch (error) {
+				console.error("Error while adding review:", error);
+			}
 		}
 	};
+
 
 	return (
 		<Row className={classNames(styles.Reviews)}>

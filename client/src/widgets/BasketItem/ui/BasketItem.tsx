@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { classNames } from "shared/lib/class-names/class-names";
 import styles from './BasketItem.module.scss';
 import { ProductResponse } from "app/models/response/ProductResponse";
@@ -7,23 +7,64 @@ import { MyButton } from "shared/ui/Button";
 import { useAppDispatch } from "features/hooks/useAppDispatch";
 import { setItemBasket } from "shared/lib/setItemBasket/setItemBasket";
 import { setProductsQuantity } from "entities/products/model/slice/ProductsSlice";
+import { useAppSelector } from "features/hooks/useAppSelector";
+import { getUsername } from "entities/user/model/selectors/getUsername";
+import { fetchProductsFromBasket } from "entities/products/model/actionsCreatots";
 
 interface BasketItemProps {
 	className?: string;
 	item: ProductResponse;
 }
 
-export const BasketItem: FC<BasketItemProps> = ({ className, item }) => {
+export const BasketItem: FC<BasketItemProps> = React.memo(({ className, item }) => {
 	const image = item.images[0];
 	const dispatch = useAppDispatch()
+	const username = useAppSelector(state => getUsername(state));
+	const productsQuantity = useAppSelector(state => state.products.productsQuanity)
+	const [quantity, setQuantity] = useState(item.quantity)
 
+	const handleRemoveAll = async () => {
+		try {
+			await setItemBasket(item.name, username, -item.quantity);
+			dispatch(setProductsQuantity({
+				name: item.name,
+				quantity: 0
+			}));
+			setQuantity(0)
+		} catch (error) {
+			console.error("Ошибка при удалении продуктов из корзины:", error);
+		}
+	};
 
-	const handleQuantityProducts = (productName: string, username: string, count: number) => {
-		setItemBasket(productName, username, count);
-		dispatch(setProductsQuantity({
-			name: productName,
-			quantity: count
-		}))
+	const handleRemoveOne = async () => {
+		try {
+			await setItemBasket(item.name, username, -1);
+			dispatch(setProductsQuantity({
+				name: item.name,
+				quantity: item.quantity - 1
+			}));
+			setQuantity(prev => prev -= 1)
+		} catch (error) {
+			console.error("Ошибка при удалении одного продукта из корзины:", error);
+		}
+	};
+
+	const handleAddOne = async () => {
+		try {
+			await setItemBasket(item.name, username, 1);
+			dispatch(setProductsQuantity({
+				name: item.name,
+				quantity: item.quantity + 1
+			}));
+			setQuantity(prev => prev += 1)
+		} catch (error) {
+			console.error("Ошибка при добавлении одного продукта в корзину:", error);
+		}
+	};
+
+	if (quantity <= 0) {
+		item = null;
+		return
 	}
 
 	return (
@@ -36,15 +77,24 @@ export const BasketItem: FC<BasketItemProps> = ({ className, item }) => {
 					<h4>{item.name}</h4>
 					<p>{item.description}</p>
 					<Row>
-						<MyButton className={styles.removeBtn}>Remove all from basket</MyButton>
-						<MyButton className={styles.removeBtn}>Remove 1 from basket</MyButton>
-						<MyButton onClick={() => handleQuantityProducts(item.name, 'Light', 1)} className={styles.removeBtn}>Add 1 product</MyButton>
+						<MyButton onClick={handleRemoveAll} className={styles.removeBtn}>Remove all from basket</MyButton>
+						<MyButton
+							onClick={handleRemoveOne}
+							className={styles.removeBtn}>Remove 1 from basket
+						</MyButton>
+						<MyButton
+							onClick={handleAddOne}
+							className={styles.removeBtn}>Add 1 product
+						</MyButton>
 					</Row>
 				</Col>
 				<Col xs={3} className="text-right">
-					<p className={styles.price}>${item.price}</p>
+					<p className={styles.price}>${item.price * quantity}</p>
+					<p className={styles.price}>Count: {quantity}</p>
 				</Col>
 			</Row>
 		</Card>
-	);
-};
+	)
+}, (prevProps, nextProps) => {
+	return prevProps.item === nextProps.item;
+});

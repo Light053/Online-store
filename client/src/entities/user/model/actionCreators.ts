@@ -40,13 +40,13 @@ export const registration = (username: string, password: string) => async (dispa
 	}
 }
 
-
 export const logout = () => async (dispatch: AppDispatch) => {
 	try {
 		dispatch(userSlice.actions.userLogout())
 
 		const response = await AuthService.logout();
 		localStorage.removeItem('token');
+		localStorage.removeItem('basket');
 
 		dispatch(userSlice.actions.userLogoutSuccess({} as IUser))
 	} catch (error) {
@@ -63,6 +63,7 @@ export const checkAuth = () => async (dispatch: AppDispatch) => {
 
 		dispatch(userSlice.actions.userCheckAuthSuccess())
 		localStorage.setItem('token', response.data.accesToken);
+		console.log(response.data.accesToken);
 
 		dispatch(userSlice.actions.userRegistrationSuccess(response.data.user))
 		console.log(response);

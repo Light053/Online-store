@@ -9,6 +9,10 @@ import { SmartphonesTypes } from "entities/products/model/types/smartphonesType"
 import BigStar from 'shared/assets/bigStar.png'
 import { Reviews } from "widgets/Reviews";
 import { ReviewsList } from "widgets/ReviewsList";
+import { setItemBasket } from "shared/lib/setItemBasket/setItemBasket";
+import { useAppSelector } from "features/hooks/useAppSelector";
+import { craeteUserBasket } from "entities/products/model/actionsCreatots";
+import { useAppDispatch } from "features/hooks/useAppDispatch";
 
 interface DeviceInfoProps {
 	className?: string,
@@ -17,8 +21,10 @@ interface DeviceInfoProps {
 export const DeviceInfoPage: FC<DeviceInfoProps> = ({ className }) => {
 	const { name } = useParams();
 	const pName = productName(name);
+	//@ts-ignore
+	const username = useAppSelector(state => state.user.user.username.username)
 	const [device, setDevice] = useState<SmartphonesTypes>()
-	console.log(pName);
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		const fetchDevice = async () => {
@@ -32,6 +38,16 @@ export const DeviceInfoPage: FC<DeviceInfoProps> = ({ className }) => {
 		};
 		fetchDevice();
 	}, []);
+
+	const handleAddedItemInBasket = async () => {
+		try {
+
+			setItemBasket(pName, username, 1)
+		} catch (error) {
+			console.log(error);
+
+		}
+	}
 
 	return (
 		<div className={classNames(styles.DeviceInfo, {}, [className])}>
@@ -58,7 +74,7 @@ export const DeviceInfoPage: FC<DeviceInfoProps> = ({ className }) => {
 									<p><strong>Model:</strong> {device.model}</p>
 									<p><strong>Description:</strong> {device.description}</p>
 									<p><strong>Price:</strong> ${device.price}</p>
-									<Button className={styles.btn} variant="outline-success">Add to Cart</Button>
+									<Button className={styles.btn} onClick={handleAddedItemInBasket} variant="outline-success">Add to Cart</Button>
 								</div>
 							</Col>
 						</Row>

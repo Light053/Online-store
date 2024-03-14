@@ -1,3 +1,4 @@
+import { LoginResponse } from "./LoginResponse";
 
 export interface IUser {
 	username: string,

@@ -13,7 +13,7 @@ export interface StateTypes {
 	error: string,
 	selectedType: { name: string, brands: string },
 	selectedBrand: { name: string },
-	reviews: ReviewType,
+	reviews: ReviewType[],
 	page: number,
 	totalCount: number,
 	limit: number,
