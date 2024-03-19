@@ -18,7 +18,7 @@ export const loginUser = (username: string, password: string) => async (dispatch
 
 		return true
 	} catch (error) {
-		dispatch(userSlice.actions.userLoginError(error.response.data.errors))
+		dispatch(userSlice.actions.userLoginError(error.response.data))
 	}
 }
 
@@ -36,7 +36,7 @@ export const registration = (username: string, password: string) => async (dispa
 
 	} catch (error) {
 
-		dispatch(userSlice.actions.userRegistrationError(error.response.data.errors))
+		dispatch(userSlice.actions.userRegistrationError(error.response.data))
 	}
 }
 
@@ -68,6 +68,6 @@ export const checkAuth = () => async (dispatch: AppDispatch) => {
 		dispatch(userSlice.actions.userRegistrationSuccess(response.data.user))
 		console.log(response);
 	} catch (error) {
-		dispatch(userSlice.actions.userCheckAuthError(error.response.data.errors))
+		dispatch(userSlice.actions.userCheckAuthError(error.response.data))
 	}
 }

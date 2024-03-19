@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Card, Form, Button, Container, Row, Col } from "react-bootstrap";
 import styles from './AuthPage.module.scss';
 import { classNames } from "shared/lib/class-names/class-names";
@@ -15,7 +15,10 @@ interface AuthPageProps {
 export const AuthPage: FC<AuthPageProps> = ({ className }) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const isAuth = useAppSelector(state => state.user.isAuth);
+	const [usernameErrorArray, setUsernameErrorArray] = useState('')
+	const [passErrorArray, setPassErrorArray] = useState('');
+	const [validationErrorMsg, setValidationErrorMsg] = useState('')
+
 	const error = useAppSelector(state => state.user.error);
 	const navigate = useNavigate();
 
@@ -44,12 +47,33 @@ export const AuthPage: FC<AuthPageProps> = ({ className }) => {
 		}
 	}
 
+	useEffect(() => {
+		setValidationErrorMsg(error.message);
+		console.log(error);
+
+		if (error.errors.length !== 0) {
+			error.errors.forEach(el => {
+				if (el.path === 'username') {
+					setUsernameErrorArray(el.msg);
+				} else {
+					setPassErrorArray(el.msg);
+				}
+			});
+		} else {
+			setUsernameErrorArray('');
+			setPassErrorArray('');
+		}
+	}, [error]);
+
 
 	return (
 		<Container className={classNames(styles.Auth)}>
 			<Card className={styles.authCard}>
 				<Card.Body>
 					<Card.Title className={styles.auth_text}>{isLogin ? 'Authorization' : 'Registration'}</Card.Title>
+
+
+					{passErrorArray && <div className="text-danger">{passErrorArray}</div>}
 					<Form className="d-flex flex-column">
 						<Form.Control
 							onChange={e => setUsername(e.target.value)}
@@ -58,6 +82,9 @@ export const AuthPage: FC<AuthPageProps> = ({ className }) => {
 							type="text"
 							placeholder="Username"
 						/>
+
+
+						{usernameErrorArray && <div className="text-danger">{usernameErrorArray}</div>}
 						<Form.Control
 							onChange={e => setPassword(e.target.value)}
 							value={password}
@@ -65,7 +92,7 @@ export const AuthPage: FC<AuthPageProps> = ({ className }) => {
 							type="password"
 							placeholder="Password"
 						/>
-
+						{validationErrorMsg && <div className={styles.errorLogin}>{validationErrorMsg}</div>}
 						<Row className="mt-3 align-items-center">
 
 							<Col>

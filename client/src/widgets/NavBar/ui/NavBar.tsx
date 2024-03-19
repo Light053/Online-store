@@ -19,7 +19,6 @@ interface NavBarProps {
 
 const NavBar: FC<NavBarProps> = ({ className }) => {
 	const isAuth = useAppSelector(state => state.user.isAuth);
-	const isLoading = useAppSelector(state => state.products.isLoading)
 	//@ts-ignore
 	const username = useAppSelector(state => state.user.user.username?.username)
 	const navigate = useNavigate();
@@ -56,9 +55,7 @@ const NavBar: FC<NavBarProps> = ({ className }) => {
 		<Navbar className={styles.Navbar}>
 			<Container>
 				<Button variant="outline-dark" className={styles.brand} onClick={checkAuth}>BuyDevice</Button>
-				{isLoading ? (
-					<Spinner />
-				) : (
+				{
 					isAuth ? (
 						<Nav className="ml-auto">
 							<MyButton
@@ -90,8 +87,7 @@ const NavBar: FC<NavBarProps> = ({ className }) => {
 							</MyButton>
 						</Nav>
 					)
-				)}
-
+				}
 			</Container>
 		</Navbar>
 	);

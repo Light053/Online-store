@@ -1,11 +1,12 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../types/user-types";
 import { IUser } from "app/models/response/IUser";
+import { DataType } from "../types/data-type";
 
 const initialState: User = {
 	isAuth: false,
 	user: { username: '', id: '', password: '' },
-	error: null,
+	error: { message: '', errors: [] },
 }
 
 export const userSlice = createSlice({
@@ -14,59 +15,56 @@ export const userSlice = createSlice({
 	reducers: {
 		// login
 		userLogin: (state) => {
-			state.error = ''
+			state.error = { message: '', errors: [] };
 		},
 		userLoginSuccess: (state, action: PayloadAction<IUser>) => {
-			state.error = '';
+			state.error = { message: '', errors: [] };
 			state.user = action.payload;
 			state.isAuth = true;
 		},
-		userLoginError: (state, action) => {
-			state.error = action.payload
-			console.log(state.error);
+		userLoginError: (state, action: PayloadAction<DataType>) => {
+			state.error = action.payload;
 		},
 
 		// register
 		userRegistration: (state) => {
-			state.error = ''
+			state.error = { message: '', errors: [] };
 		},
 		userRegistrationSuccess: (state, action: PayloadAction<IUser>) => {
-			state.error = '';
+			state.error = { message: '', errors: [] };
 			state.user = action.payload;
 			state.isAuth = true;
-			console.log(state.isAuth);
 		},
-		userRegistrationError: (state, action) => {
-			state.error = action.payload
-			console.log(action.payload);
+		userRegistrationError: (state, action: PayloadAction<DataType>) => {
+			state.error = action.payload;
 		},
 
 		// logout
 
 		userLogout: (state) => {
-			state.error = '';
+			state.error = { message: '', errors: [] };
 		},
-		userLogoutSuccess: (state, action) => {
-			state.error = '';
+		userLogoutSuccess: (state, action: PayloadAction<IUser>) => {
+			state.error = { message: '', errors: [] };
 			state.user = action.payload;
 			state.isAuth = false;
 		},
-		userLogoutError: (state, action) => {
-			state.error = action.payload
+		userLogoutError: (state, action: PayloadAction<DataType>) => {
+			state.error = action.payload;
 		},
 
 		// checkAuth 
 
 		userCheckAuth: (state) => {
-			state.error = '';
+			state.error = { message: '', errors: [] };
 		},
 		userCheckAuthSuccess: (state, action: PayloadAction<IUser>) => {
-			state.error = '';
+			state.error = { message: '', errors: [] };
 			state.user = action.payload;
 			state.isAuth = true;
 		},
-		userCheckAuthError: (state, action) => {
-			state.error = action.payload
+		userCheckAuthError: (state, action: PayloadAction<DataType>) => {
+			state.error = action.payload;
 		},
 	},
 

@@ -6,8 +6,6 @@ import { AppRouter } from "./providers/router";
 import { checkAuth } from "entities/user/model/actionCreators";
 import { useAppDispatch } from "features/hooks/useAppDispatch";
 import { ChangeTheme } from "widgets/ChangeTheme/ui/ChangeTheme";
-import { useAppSelector } from "features/hooks/useAppSelector";
-import { getUsername } from "entities/user/model/selectors/getUsername";
 
 interface AppProps {
 	className?: string;
