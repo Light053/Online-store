@@ -32,9 +32,6 @@ class ProductService {
 			}
 
 			const product = await Item.findOne({ name });
-			const allProducts = await Item.find()
-
-			const indexOfProduct = allProducts.findIndex(p => p.name === product.name)
 
 			if (!product) {
 				throw new Error('Product not found');
@@ -42,41 +39,57 @@ class ProductService {
 
 			const existingItemIndex = user.basket.items.findIndex(item => item.itemId.equals(product._id));
 
+			const totalPrice = product.price * countItems;
 
 			if (existingItemIndex === -1) {
-				user.basket.items.push({ itemId: product._id, quantity: countItems, price: product.price * countItems });
-			} else {
+				user.basket.totalPrice += totalPrice;
+				user.basket.items.push({ itemId: product._id, quantity: countItems, price: product.price });
+			} else if (countItems >= 1) {
 				user.basket.items[existingItemIndex].quantity += countItems;
-				user.basket.totalPrice += user.basket.totalPrice
-				console.log(user.basket.items[existingItemIndex].quantity);
+				user.basket.items[existingItemIndex].price += product.price;
+				user.basket.totalPrice += totalPrice;
 			}
 
-			await user.save();
-
-			const totalPrice = product.price * countItems;
 
 			let basket = await Basket.findOne({ user: user._id });
 
 			if (!basket) {
-				basket = await Basket.create({ user: user._id, items: [], totalPrice: 0 });
+				basket = await Basket.create({ user: user._id, items: [], totalPrice: product.price });
 			}
+
 			const existingItemInBasket = basket.items.findIndex(item => item.itemId.equals(product._id));
 
 			if (existingItemInBasket === -1) {
 				basket.totalPrice += totalPrice;
 				basket.items.push({ itemId: product._id, quantity: countItems, price: product.price * countItems });
-			} else {
+			} else if (countItems >= 1) {
 				basket.items[existingItemInBasket].quantity += countItems;
 				basket.items[existingItemInBasket].price += product.price;
-				basket.totalPrice = basket.totalPrice * countItems;
-				allProducts[indexOfProduct].quantity += 1;
-				basket.totalPrice += product.price;
+				basket.totalPrice += (product.price);
 			}
 
-			if (countItems <= 0 && existingItemInBasket) {
-				user.basket.items[existingItemInBasket].quantity + - countItems;
+
+			if (countItems < 0 && existingItemInBasket !== -1) {
+				user.basket.totalPrice -= product.price;
+				user.basket.items[existingItemInBasket].quantity += countItems;
+				user.basket.items[existingItemInBasket].price -= product.price;
+
+				basket.totalPrice -= product.price;
+				basket.items[existingItemInBasket].price -= product.price;
+				basket.items[existingItemInBasket].quantity += countItems;
 			}
 
+			if (existingItemInBasket !== -1 && user.basket.items[existingItemInBasket].quantity <= 0) {
+				user.basket.totalPrice -= user.basket.items[existingItemInBasket].price;
+				user.basket.items.splice(existingItemInBasket, 1);
+			}
+
+			if (existingItemInBasket !== -1 && basket.items[existingItemInBasket].quantity <= 0) {
+				basket.totalPrice -= basket.items[existingItemInBasket].price;
+				basket.items.splice(existingItemInBasket, 1);
+			}
+
+			await user.save();
 			await basket.save();
 
 			return { user, basket };
@@ -186,9 +199,9 @@ class ProductService {
 				throw new Error('User not found');
 			}
 
-			const basket = await Basket.findOne({ user: user._id });
+			let basket = await Basket.findOne({ user: user._id });
 			if (!basket) {
-				throw new Error('Basket not found for this user');
+				basket = await this.createUserBasket(username);
 			}
 
 			const productIds = basket.items.map(item => item.itemId);
@@ -212,6 +225,7 @@ class ProductService {
 			throw error;
 		}
 	}
+
 
 
 	async getReviews(name) {

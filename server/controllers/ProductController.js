@@ -5,17 +5,6 @@ const ProductService = require("../service/ProductService");
 
 class ProductController {
 
-	async craeteUserBasket(req, res, next) {
-		try {
-			const { username } = req.body
-
-			const basket = await ProductService.createUserBasket(username);
-
-			res.status(200).json(basket)
-		} catch (error) {
-			next(ApiError.badRequest(error.message))
-		}
-	}
 
 	async setItemBasket(req, res, next) {
 		try {
