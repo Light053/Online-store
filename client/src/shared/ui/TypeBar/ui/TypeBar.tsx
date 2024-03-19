@@ -5,8 +5,6 @@ import { ListGroup } from "react-bootstrap"
 import { useAppSelector } from "features/hooks/useAppSelector"
 import { useAppDispatch } from "features/hooks/useAppDispatch"
 import { setSelectedType } from "entities/products/model/slice/ProductsSlice"
-import { TypesType } from "entities/products/model/types/typesType"
-
 
 interface TypeBarProps {
 	className?: string

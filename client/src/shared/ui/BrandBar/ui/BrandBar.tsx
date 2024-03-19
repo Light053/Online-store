@@ -17,12 +17,6 @@ export const BrandBar: FC<BrandBarProps> = ({ className }) => {
 	const selectedType = useAppSelector(state => state.products.selectedType)
 	const dispatch = useAppDispatch();
 
-	const allBrands = types.reduce((acc, type) => {
-		return acc.concat(type.brands);
-	}, []);
-
-	const uniqueBrands = Array.from(new Set(allBrands));
-
 	const selectedBrand = useAppSelector(state => state.products.selectedBrand);
 
 	const selectBrand = (brand: BrandTypes) => {
@@ -30,13 +24,11 @@ export const BrandBar: FC<BrandBarProps> = ({ className }) => {
 	}
 
 	const deviceBrands = useMemo(() => {
-		//@ts-ignore
 		const selectedTypeName = selectedType.name;
 		const selectedTypeBrands = types.find(type => type.name === selectedTypeName);
 
 		return selectedTypeBrands.brands;
 	}, [selectedType, types]);
-	console.log(selectedBrand);
 
 	return (
 		<Row className={classNames(styles.BrandBar, {}, [className, "d-flex mt-3"])}>

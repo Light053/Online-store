@@ -6,7 +6,7 @@ import { useAppSelector } from "features/hooks/useAppSelector"
 import { useAppDispatch } from "features/hooks/useAppDispatch"
 import { fetchProductsFromBasket } from "entities/products/model/actionsCreatots"
 import { getUsername } from "entities/user/model/selectors/getUsername"
-import { clearBasket } from "entities/products/model/slice/ProductsSlice"
+import Basket from 'shared/assets/Basket.svg'
 import { BasketItem } from "widgets/BasketItem/ui/BasketItem"
 
 interface BasketPageProps {
@@ -34,7 +34,14 @@ export const BasketPage: FC<BasketPageProps> = ({ className }) => {
 
 	return (
 		<Container className={classNames(styles.BasketPage, {}, [])}>
-			{products.map(item => <BasketItem key={item.name} item={item} />)}
+			{products.length === 0 ? (
+				<div className={classNames(styles.emptyBasket, {}, [])}>
+					<div className={styles.notFound}>Cart is empty!</div>
+					<Basket className={styles.cart} />
+				</div>
+			)
+				:
+				products.map(item => <BasketItem key={item.name} item={item} />)}
 		</Container>
 	)
 }

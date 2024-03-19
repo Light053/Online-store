@@ -24,7 +24,7 @@ export const DeviceItem: FC<DeviceItemProps> = ({ className, device }) => {
 	const navigate = useNavigate();
 
 	const handleNavigate = () => {
-		navigate(`${RouterPath.deviceInfo}${device.name}`)
+		navigate(`deviceInfo/${device.name}`)
 	}
 
 	return (

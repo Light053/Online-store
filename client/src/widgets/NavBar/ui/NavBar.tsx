@@ -50,6 +50,9 @@ const NavBar: FC<NavBarProps> = ({ className }) => {
 		navigate(RouterPath.basket);
 	}
 
+	const handleProfile = () => {
+		navigate(`/profile/${username}`)
+	}
 
 	return (
 		<Navbar className={styles.Navbar}>
@@ -76,6 +79,7 @@ const NavBar: FC<NavBarProps> = ({ className }) => {
 							>
 								<Basket width={30} height={30} />
 							</MyButton>
+							<MyButton onClick={handleProfile} className={styles.profile}>{username}</MyButton>
 						</Nav>
 					) : (
 						<Nav className="ml-auto">

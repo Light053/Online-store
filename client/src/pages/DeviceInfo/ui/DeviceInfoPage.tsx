@@ -11,7 +11,6 @@ import { Reviews } from "widgets/Reviews";
 import { ReviewsList } from "widgets/ReviewsList";
 import { setItemBasket } from "shared/lib/setItemBasket/setItemBasket";
 import { useAppSelector } from "features/hooks/useAppSelector";
-import { useAppDispatch } from "features/hooks/useAppDispatch";
 
 interface DeviceInfoProps {
 	className?: string,
@@ -19,16 +18,15 @@ interface DeviceInfoProps {
 
 export const DeviceInfoPage: FC<DeviceInfoProps> = ({ className }) => {
 	const { name } = useParams();
-	const pName = productName(name);
+
 	//@ts-ignore
 	const username = useAppSelector(state => state.user.user.username.username)
 	const [device, setDevice] = useState<SmartphonesTypes>()
-	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		const fetchDevice = async () => {
 			try {
-				const response = await getProduct(pName);
+				const response = await getProduct(name);
 				const productData = response.data;
 				setDevice(productData);
 			} catch (error) {
@@ -41,7 +39,7 @@ export const DeviceInfoPage: FC<DeviceInfoProps> = ({ className }) => {
 	const handleAddedItemInBasket = async () => {
 		try {
 
-			setItemBasket(pName, username, 1)
+			setItemBasket(name, username, 1)
 		} catch (error) {
 			console.log(error);
 
@@ -98,10 +96,10 @@ export const DeviceInfoPage: FC<DeviceInfoProps> = ({ className }) => {
 					</Container>
 					<Container>
 						<div className={styles.reviews}>Reviews</div>
-						<ReviewsList productName={pName} />
+						<ReviewsList productName={name} />
 					</Container>
 					<Container>
-						<Reviews productName={pName} />
+						<Reviews productName={name} />
 					</Container>
 				</>
 			)}

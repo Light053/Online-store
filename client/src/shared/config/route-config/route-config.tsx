@@ -3,8 +3,8 @@ import { MainPage } from "pages/MainPage"
 import { RouteProps } from "react-router"
 import { DeviceInfoPage } from "pages/DeviceInfo";
 import { AdminPanelPage } from "pages/AdminPanelPage";
-import { AppRouter } from "app/providers/router";
 import { BasketPage } from "pages/BasketPAge";
+import { UserPage } from "pages/UserPage";
 
 enum AppRoutes {
 	STORE = 'main',
@@ -13,15 +13,17 @@ enum AppRoutes {
 	REGISTRATION = 'registration',
 	ADMIN_PANEL = 'admin',
 	BASKET = 'basket',
+	USER_PAGE = 'profile'
 }
 
 export const RouterPath: Record<AppRoutes, string> = {
 	[AppRoutes.STORE]: '/',
 	[AppRoutes.AUTH]: '/authorization',
 	[AppRoutes.REGISTRATION]: '/registration',
-	[AppRoutes.DEVICE_ROUTE]: '/:name',
+	[AppRoutes.DEVICE_ROUTE]: '/deviceInfo/:name',
 	[AppRoutes.ADMIN_PANEL]: '/admin',
-	[AppRoutes.BASKET]: '/basket'
+	[AppRoutes.BASKET]: '/basket',
+	[AppRoutes.USER_PAGE]: 'profile/:username'
 }
 
 export const routerConfig: Record<AppRoutes, RouteProps> = {
@@ -48,5 +50,9 @@ export const routerConfig: Record<AppRoutes, RouteProps> = {
 	[AppRoutes.BASKET]: {
 		path: RouterPath.basket,
 		element: <BasketPage />
+	},
+	[AppRoutes.USER_PAGE]: {
+		path: RouterPath.profile,
+		element: <UserPage />
 	}
 }

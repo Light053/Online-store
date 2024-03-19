@@ -46,6 +46,7 @@ export const SmartphonesList: FC<SmartphonesListProps> = ({ className }) => {
 		}
 		return (
 			<>
+				{smartphones.length === 0 && <div className={styles.notFound}>No products found!</div>}
 				{smartphonesChunks.map((chunk, index) => (
 					<Row key={index} className={classNames(styles.SmartphonesRow, {}, [])}>
 						{chunk.map(s =>
