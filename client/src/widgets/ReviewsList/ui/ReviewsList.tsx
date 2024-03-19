@@ -25,7 +25,6 @@ export const ReviewsList: FC<ReviewsListProps> = ({ className, productName }) =>
 
 		fetchReviews();
 	}, [storeReview]);
-	console.log('storeReview', storeReview);
 
 	return (
 		<div className={classNames(styles.ReviewsList)}>

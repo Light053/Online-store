@@ -9,7 +9,6 @@ import { setItemBasket } from "shared/lib/setItemBasket/setItemBasket";
 import { setProductsQuantity } from "entities/products/model/slice/ProductsSlice";
 import { useAppSelector } from "features/hooks/useAppSelector";
 import { getUsername } from "entities/user/model/selectors/getUsername";
-import { fetchProductsFromBasket } from "entities/products/model/actionsCreatots";
 
 interface BasketItemProps {
 	className?: string;
@@ -25,7 +24,7 @@ export const BasketItem: FC<BasketItemProps> = React.memo(({ className, item }) 
 
 	const handleRemoveAll = async () => {
 		try {
-			await setItemBasket(item.name, username, -item.quantity);
+			await setItemBasket(item.name, username, -9999);
 			dispatch(setProductsQuantity({
 				name: item.name,
 				quantity: 0
@@ -44,6 +43,7 @@ export const BasketItem: FC<BasketItemProps> = React.memo(({ className, item }) 
 				quantity: item.quantity - 1
 			}));
 			setQuantity(prev => prev -= 1)
+
 		} catch (error) {
 			console.error("Ошибка при удалении одного продукта из корзины:", error);
 		}

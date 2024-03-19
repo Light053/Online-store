@@ -209,7 +209,7 @@ export const DesktopPCFields: FC<DesktopPCtypesProps> = ({ className, selectedTy
 						type="text"
 						name="ramValue"
 						className={styles.specInput}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'graphics card', setPC, pc)}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => universalHandleSpecificationChange(e, 'ram', setPC, pc)}
 					/>
 				</div>
 			</FormGroup>

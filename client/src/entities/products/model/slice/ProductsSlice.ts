@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { StateTypes } from "../types/stateType";
-import { craeteUserBasket, fetchProducts, fetchProductsFromBasket } from "../actionsCreatots";
+import { fetchProducts, fetchProductsFromBasket } from "../actionsCreatots";
 import { SmartphonesTypes } from "../types/smartphonesType";
 import { BrandTypes } from "../types/brandsType";
 import { ReviewType } from "../types/reviewType";
@@ -32,16 +32,8 @@ export const ProductsSlice = createSlice({
 	name: 'products',
 	initialState,
 	reducers: {
-		setSelectedType: (state: StateTypes, action) => {
-			state.selectedType.name = action.payload;
-			state.selectedBrand = { name: '' };
-		},
-		setSelectedBrand: (state: StateTypes, action: PayloadAction<BrandTypes>) => {
-			state.selectedBrand = action.payload
-		},
-		setReview: (state: StateTypes, action: PayloadAction<ReviewType[]>) => {
-			state.reviews.push(...action.payload)
-		},
+
+		//clear
 		clearReviews: (state: StateTypes) => {
 			state.reviews = [];
 		},
@@ -51,6 +43,9 @@ export const ProductsSlice = createSlice({
 		clearBasket: (state: StateTypes) => {
 			state.productsFromBasket = [];
 		},
+
+
+		//set
 		setPage: (state: StateTypes, action) => {
 			state.page = action.payload;
 		},
@@ -69,7 +64,17 @@ export const ProductsSlice = createSlice({
 			} else {
 				state.productsQuanity.push({ name, quantity });
 			}
-		}
+		},
+		setSelectedType: (state: StateTypes, action) => {
+			state.selectedType.name = action.payload;
+			state.selectedBrand = { name: '' };
+		},
+		setSelectedBrand: (state: StateTypes, action: PayloadAction<BrandTypes>) => {
+			state.selectedBrand = action.payload
+		},
+		setReview: (state: StateTypes, action: PayloadAction<ReviewType[]>) => {
+			state.reviews.push(...action.payload)
+		},
 
 	},
 	extraReducers: (builder) => {
@@ -98,19 +103,6 @@ export const ProductsSlice = createSlice({
 			.addCase(fetchProductsFromBasket.rejected, (state: StateTypes, action) => {
 				state.isLoading = false;
 				state.error = action.payload.toString();
-			});
-
-		builder.addCase(craeteUserBasket.fulfilled, (state: StateTypes) => {
-			state.error = '';
-			state.isLoading = false;
-		})
-			.addCase(craeteUserBasket.pending, (state: StateTypes) => {
-				state.isLoading = true;
-				state.error = '';
-			})
-			.addCase(craeteUserBasket.rejected, (state: StateTypes, action) => {
-				state.isLoading = false;
-				state.error = String(action.payload)
 			});
 	}
 });

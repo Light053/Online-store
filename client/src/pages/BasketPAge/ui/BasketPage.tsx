@@ -31,7 +31,6 @@ export const BasketPage: FC<BasketPageProps> = ({ className }) => {
 	if (isLoading) {
 		return <div className={styles.spiner}><Spinner /></div>
 	}
-	console.log(products);
 
 	return (
 		<Container className={classNames(styles.BasketPage, {}, [])}>

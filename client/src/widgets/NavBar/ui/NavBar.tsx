@@ -12,8 +12,6 @@ import { useAppDispatch } from "features/hooks/useAppDispatch";
 import { MyButton } from "shared/ui/Button";
 import Basket from 'shared/assets/Basket.svg'
 import { classNames } from "shared/lib/class-names/class-names";
-import { craeteUserBasket } from "entities/products/model/actionsCreatots";
-import { getUsername } from "entities/user/model/selectors/getUsername";
 
 interface NavBarProps {
 	className?: string;
@@ -22,6 +20,8 @@ interface NavBarProps {
 const NavBar: FC<NavBarProps> = ({ className }) => {
 	const isAuth = useAppSelector(state => state.user.isAuth);
 	const isLoading = useAppSelector(state => state.products.isLoading)
+	//@ts-ignore
+	const username = useAppSelector(state => state.user.user.username?.username)
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 

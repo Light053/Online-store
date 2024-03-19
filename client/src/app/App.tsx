@@ -6,7 +6,6 @@ import { AppRouter } from "./providers/router";
 import { checkAuth } from "entities/user/model/actionCreators";
 import { useAppDispatch } from "features/hooks/useAppDispatch";
 import { ChangeTheme } from "widgets/ChangeTheme/ui/ChangeTheme";
-import { craeteUserBasket } from "entities/products/model/actionsCreatots";
 import { useAppSelector } from "features/hooks/useAppSelector";
 import { getUsername } from "entities/user/model/selectors/getUsername";
 
@@ -16,9 +15,6 @@ interface AppProps {
 
 export const App: FC<AppProps> = ({ className }) => {
 	const dispatch = useAppDispatch();
-	//@ts-ignore
-	const username = useAppSelector(state => state.user.user.username?.username)
-
 
 	const [theme, setTheme] = useState<boolean>(() => {
 		const storedTheme = localStorage.getItem("theme");
@@ -30,11 +26,7 @@ export const App: FC<AppProps> = ({ className }) => {
 		if (localStorage.getItem("token")) {
 			dispatch(checkAuth())
 		}
-		else if (!localStorage.getItem('basket')) {
-			console.log(username);
-			dispatch(craeteUserBasket({ username }))
 
-		}
 	}, []);
 
 

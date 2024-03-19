@@ -11,7 +11,6 @@ import { Reviews } from "widgets/Reviews";
 import { ReviewsList } from "widgets/ReviewsList";
 import { setItemBasket } from "shared/lib/setItemBasket/setItemBasket";
 import { useAppSelector } from "features/hooks/useAppSelector";
-import { craeteUserBasket } from "entities/products/model/actionsCreatots";
 import { useAppDispatch } from "features/hooks/useAppDispatch";
 
 interface DeviceInfoProps {
