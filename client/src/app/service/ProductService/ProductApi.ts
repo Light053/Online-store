@@ -14,7 +14,7 @@ export default class ProductApi {
 		return $apiProducts.post('basket', data);
 	}
 
-	static async getProducts(limit: number = 9, page: number = 1, type = 'Smartphone', brand = ''): Promise<AxiosResponse<ProductResponse[]>> {
+	static async getProducts(limit: number, page: number, type = 'Smartphone', brand = ''): Promise<AxiosResponse<ProductResponse[]>> {
 		const url = `/products?type=${type}&brand=${brand}&limit=${limit}&page=${page}`;
 		return $apiProducts.get<ProductResponse[]>(url);
 	}

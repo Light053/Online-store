@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { classNames } from "shared/lib/class-names/class-names";
 import styles from './SmartphonesList.module.scss';
 import { useAppSelector } from "features/hooks/useAppSelector";
@@ -7,32 +7,26 @@ import { fetchProducts, fetchProductsFromBasket } from "entities/products/model/
 import { Row, Spinner, Col } from "react-bootstrap";
 import { DeviceItem } from "widgets/DeviceItem/ui/DeviceItem";
 import { clearSmartphones, setTotalCount } from "entities/products/model/slice/ProductsSlice";
-import { setItemBasket } from "shared/lib/setItemBasket/setItemBasket";
+import React from "react";
 
 interface SmartphonesListProps {
 	className?: string;
 }
 
-export const SmartphonesList: FC<SmartphonesListProps> = ({ className }) => {
-	const smartphones = useAppSelector(state => state.products.smartphones);
-	const isLoading = useAppSelector(state => state.products.isLoading);
-	const page = useAppSelector(state => state.products.page);
-	const limit = useAppSelector(state => state.products.limit);
-	const selectedType = useAppSelector(state => state.products.selectedType);
-	const selectedBrands = useAppSelector(state => state.products.selectedBrand)
-
-	const type = selectedType.name;
-	const brand = selectedBrands.name
+export const SmartphonesList: FC<SmartphonesListProps> = React.memo(({ className }) => {
+	const { smartphones, isLoading, page, limit, selectedType, selectedBrand } = useAppSelector(state => state.products);
+	const { name: type } = selectedType;
+	const { name: brand } = selectedBrand;
 	const dispatch = useAppDispatch();
 
-	useEffect(() => {
-		const fetchApi = async () => {
-			dispatch(clearSmartphones());
-			dispatch(fetchProducts({ type, brand })).then(result => dispatch(setTotalCount(smartphones.length)));
-		};
-		fetchApi()
+	const fetchApi = useCallback(async () => {
+		dispatch(clearSmartphones());
+		dispatch(fetchProducts({ type, brand }));
+	}, [dispatch, type, brand]);
 
-	}, [type, brand]);
+	useEffect(() => {
+		fetchApi();
+	}, [fetchApi]);
 
 	if (isLoading) {
 		return <div className={styles.spinner}><Spinner /></div>;
@@ -65,4 +59,4 @@ export const SmartphonesList: FC<SmartphonesListProps> = ({ className }) => {
 			{renderSmartphones()}
 		</>
 	);
-};
+});

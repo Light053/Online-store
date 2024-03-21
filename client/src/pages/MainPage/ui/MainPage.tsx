@@ -4,8 +4,8 @@ import styles from './MainPage.module.scss'
 import { Col, Container, Row } from "react-bootstrap"
 import { TypeBar } from "shared/ui/TypeBar"
 import { BrandBar } from "shared/ui/BrandBar/ui/BrandBar"
-import { SmartphonesList } from "shared/ui/SmartphonesList"
 import { PaginationPages } from "features/PaginationPages"
+import { SmartphonesList } from "widgets/SmartphonesList"
 
 
 interface MainPageProps {

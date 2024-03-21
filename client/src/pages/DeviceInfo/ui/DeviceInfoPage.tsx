@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { classNames } from "shared/lib/class-names/class-names";
 import styles from './DeviceInfoPage.module.scss';
 import { useParams } from "react-router";
@@ -11,6 +11,7 @@ import { Reviews } from "widgets/Reviews";
 import { ReviewsList } from "widgets/ReviewsList";
 import { setItemBasket } from "shared/lib/setItemBasket/setItemBasket";
 import { useAppSelector } from "features/hooks/useAppSelector";
+import { getUsername } from "entities/user/model/selectors/getUsername";
 
 interface DeviceInfoProps {
 	className?: string,
@@ -18,9 +19,7 @@ interface DeviceInfoProps {
 
 export const DeviceInfoPage: FC<DeviceInfoProps> = ({ className }) => {
 	const { name } = useParams();
-
-	//@ts-ignore
-	const username = useAppSelector(state => state.user.user.username.username)
+	const username = useAppSelector(state => getUsername(state))
 	const [device, setDevice] = useState<SmartphonesTypes>()
 
 	useEffect(() => {
@@ -36,15 +35,13 @@ export const DeviceInfoPage: FC<DeviceInfoProps> = ({ className }) => {
 		fetchDevice();
 	}, []);
 
-	const handleAddedItemInBasket = async () => {
+	const handleAddedItemInBasket = useCallback(async () => {
 		try {
-
 			setItemBasket(name, username, 1)
 		} catch (error) {
 			console.log(error);
-
 		}
-	}
+	}, [])
 
 	return (
 		<div className={classNames(styles.DeviceInfo, {}, [className])}>

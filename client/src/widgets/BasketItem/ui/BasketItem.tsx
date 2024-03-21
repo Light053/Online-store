@@ -9,6 +9,7 @@ import { setItemBasket } from "shared/lib/setItemBasket/setItemBasket";
 import { setProductsQuantity } from "entities/products/model/slice/ProductsSlice";
 import { useAppSelector } from "features/hooks/useAppSelector";
 import { getUsername } from "entities/user/model/selectors/getUsername";
+import { EmptyCart } from "widgets/EmpyCart/EmptyCart";
 
 interface BasketItemProps {
 	className?: string;
@@ -19,7 +20,6 @@ export const BasketItem: FC<BasketItemProps> = React.memo(({ className, item }) 
 	const image = item.images[0];
 	const dispatch = useAppDispatch()
 	const username = useAppSelector(state => getUsername(state));
-	const productsQuantity = useAppSelector(state => state.products.productsQuanity)
 	const [quantity, setQuantity] = useState(item.quantity)
 
 	const handleRemoveAll = async () => {

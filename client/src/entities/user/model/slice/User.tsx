@@ -5,7 +5,7 @@ import { DataType } from "../types/data-type";
 
 const initialState: User = {
 	isAuth: false,
-	user: { username: '', id: '', password: '' },
+	user: { username: { username: '', basket: null, password: '', roles: [] }, id: '' },
 	error: { message: '', errors: [] },
 }
 
@@ -21,6 +21,10 @@ export const userSlice = createSlice({
 			state.error = { message: '', errors: [] };
 			state.user = action.payload;
 			state.isAuth = true;
+			console.log(state.user);
+			console.log(action.payload);
+
+
 		},
 		userLoginError: (state, action: PayloadAction<DataType>) => {
 			state.error = action.payload;
@@ -57,11 +61,13 @@ export const userSlice = createSlice({
 
 		userCheckAuth: (state) => {
 			state.error = { message: '', errors: [] };
+
 		},
 		userCheckAuthSuccess: (state, action: PayloadAction<IUser>) => {
 			state.error = { message: '', errors: [] };
 			state.user = action.payload;
 			state.isAuth = true;
+			console.log(state.user);
 		},
 		userCheckAuthError: (state, action: PayloadAction<DataType>) => {
 			state.error = action.payload;

@@ -46,7 +46,6 @@ export const logout = () => async (dispatch: AppDispatch) => {
 
 		const response = await AuthService.logout();
 		localStorage.removeItem('token');
-		localStorage.removeItem('basket');
 
 		dispatch(userSlice.actions.userLogoutSuccess({} as IUser))
 	} catch (error) {
@@ -66,7 +65,6 @@ export const checkAuth = () => async (dispatch: AppDispatch) => {
 		console.log(response.data.accesToken);
 
 		dispatch(userSlice.actions.userRegistrationSuccess(response.data.user))
-		console.log(response);
 	} catch (error) {
 		dispatch(userSlice.actions.userCheckAuthError(error.response.data))
 	}

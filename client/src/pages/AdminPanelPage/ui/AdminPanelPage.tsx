@@ -13,8 +13,6 @@ export const AdminPanelPage: FC<AdminPanelPageProps> = ({ className }) => {
 
 	const [modalVision, setModalVision] = useState<boolean>(false)
 
-
-
 	return (
 		<Container className={classNames(styles.AdminPanelPage, {}, ['d-flex flex-column'])}>
 			<MyButton onClick={() => setModalVision(true)} className={classNames(styles.addType, {}, ['mt-3 p-2'])}>Add device</MyButton>

@@ -7,17 +7,26 @@ import { RouterPath } from "shared/config/route-config/route-config";
 import { useAppDispatch } from "features/hooks/useAppDispatch";
 import { loginUser, registration } from "entities/user/model/actionCreators";
 import { useAppSelector } from "features/hooks/useAppSelector";
+import { handleErrors } from "shared/lib/handleErrors/handleErrors";
 
 interface AuthPageProps {
 	className?: string;
 }
 
+export interface Errors {
+	username: string;
+	password: string;
+	validation: string;
+}
+
 export const AuthPage: FC<AuthPageProps> = ({ className }) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const [usernameErrorArray, setUsernameErrorArray] = useState('')
-	const [passErrorArray, setPassErrorArray] = useState('');
-	const [validationErrorMsg, setValidationErrorMsg] = useState('')
+	const [errors, setErrors] = useState<Errors>({
+		username: '',
+		password: '',
+		validation: ''
+	});
 
 	const error = useAppSelector(state => state.user.error);
 	const navigate = useNavigate();
@@ -48,23 +57,8 @@ export const AuthPage: FC<AuthPageProps> = ({ className }) => {
 	}
 
 	useEffect(() => {
-		setValidationErrorMsg(error.message);
-		console.log(error);
-
-		if (error.errors.length !== 0) {
-			error.errors.forEach(el => {
-				if (el.path === 'username') {
-					setUsernameErrorArray(el.msg);
-				} else {
-					setPassErrorArray(el.msg);
-				}
-			});
-		} else {
-			setUsernameErrorArray('');
-			setPassErrorArray('');
-		}
+		handleErrors(error, setErrors);
 	}, [error]);
-
 
 	return (
 		<Container className={classNames(styles.Auth)}>
@@ -72,27 +66,25 @@ export const AuthPage: FC<AuthPageProps> = ({ className }) => {
 				<Card.Body>
 					<Card.Title className={styles.auth_text}>{isLogin ? 'Authorization' : 'Registration'}</Card.Title>
 
-
-					{passErrorArray && <div className="text-danger">{passErrorArray}</div>}
+					{errors.username && <div className={styles.errorText}>{errors.username}</div>}
 					<Form className="d-flex flex-column">
 						<Form.Control
 							onChange={e => setUsername(e.target.value)}
 							value={username}
-							className="mt-2"
+							className="mt-1 mb-2"
 							type="text"
 							placeholder="Username"
 						/>
 
-
-						{usernameErrorArray && <div className="text-danger">{usernameErrorArray}</div>}
+						{errors.password && <div className={styles.errorText}>{errors.password}</div>}
 						<Form.Control
 							onChange={e => setPassword(e.target.value)}
 							value={password}
-							className="mt-3"
+							className="mt-1"
 							type="password"
 							placeholder="Password"
 						/>
-						{validationErrorMsg && <div className={styles.errorLogin}>{validationErrorMsg}</div>}
+						{errors.validation && <div className={styles.errorLogin}>{errors.validation}</div>}
 						<Row className="mt-3 align-items-center">
 
 							<Col>

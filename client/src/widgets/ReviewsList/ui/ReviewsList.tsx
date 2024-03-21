@@ -4,9 +4,8 @@ import styles from './ReviewsList.module.scss';
 import { getReviews } from "shared/lib/getReviews/getReviews";
 import { ReviewResponse } from "app/models/response/ReviewResponse";
 import { Row, Col } from "react-bootstrap";
-import { ReviewItem } from "shared/ui/ReviewItem";
 import { useAppSelector } from "features/hooks/useAppSelector";
-import { useAppDispatch } from "features/hooks/useAppDispatch";
+import { ReviewItem } from "widgets/ReviewItem";
 
 interface ReviewsListProps {
 	className?: string;

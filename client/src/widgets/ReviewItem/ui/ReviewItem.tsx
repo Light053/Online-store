@@ -3,10 +3,7 @@ import { classNames } from "shared/lib/class-names/class-names";
 import styles from './ReviewItem.module.scss';
 import { ReviewResponse } from "app/models/response/ReviewResponse";
 import { Card } from "react-bootstrap";
-import moment from "moment";
-import { useAppSelector } from "features/hooks/useAppSelector";
-import { addReview } from "shared/lib/addReview/addReview";
-import { MyButton } from "shared/ui/Button";
+import moment from "moment";;
 
 interface ReviewItemProps {
 	className?: string;
@@ -15,10 +12,6 @@ interface ReviewItemProps {
 
 export const ReviewItem: FC<ReviewItemProps> = ({ className, review }) => {
 	const formattedDate = moment(review.createdAt).format('YYYY-MM-DD');
-	const storeReview = useAppSelector(state => state.products.reviews)
-	const [reviews, setReviews] = useState(review)
-
-
 
 	return (
 		<Card className={classNames(styles.ReviewItem)}>

@@ -12,6 +12,6 @@ export interface SmartphonesTypes {
 	specifications?: { name: string; value: string }[];
 	images?: string[];
 	rating?: number;
-	reviews?: { user: IUser; text: string; rating: number; createdAt: Date }[];
+	reviews?: { username: string; text: string; rating: number; createdAt: Date }[];
 	availability?: string;
 }

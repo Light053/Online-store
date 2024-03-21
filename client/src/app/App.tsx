@@ -24,7 +24,6 @@ export const App: FC<AppProps> = ({ className }) => {
 		if (localStorage.getItem("token")) {
 			dispatch(checkAuth())
 		}
-
 	}, []);
 
 

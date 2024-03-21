@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useCallback, useEffect } from "react";
 import { classNames } from "shared/lib/class-names/class-names";
 import styles from './Reviews.module.scss';
 import { Form, Row } from "react-bootstrap";
@@ -8,35 +8,31 @@ import { addReview } from "shared/lib/addReview/addReview";
 import { useAppSelector } from "features/hooks/useAppSelector";
 import { useAppDispatch } from "features/hooks/useAppDispatch";
 import { clearReviews, setReview } from "entities/products/model/slice/ProductsSlice";
-import React from "react";
+import { getUsername } from "entities/user/model/selectors/getUsername";
 
 interface ReviewsProps {
 	className?: string;
-	productName: string
+	productName: string;
 }
 
 export const Reviews: FC<ReviewsProps> = ({ className, productName }) => {
-
-	const [reviewError, setReviewError] = useState('')
+	const [reviewError, setReviewError] = useState('');
 	const [reviewText, setReviewText] = useState('');
-	const storeReview = useAppSelector(state => state.products.reviews);
 	const [rating, setRating] = useState<number>(0);
-	const [errorRating, setErrorRating] = useState('')
-
-	//@ts-ignore
-	const user = useAppSelector(state => state.user.user.username.username)
+	const [errorRating, setErrorRating] = useState('');
+	const user = useAppSelector(state => getUsername(state));
 	const disptach = useAppDispatch();
 
-	const handleReviewTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleReviewTextChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
 		setReviewText(e.target.value);
-		setReviewError('')
-	};
+		setReviewError('');
+	}, []);
 
-	const handleRatingChange = (newRating: number) => {
+	const handleRatingChange = useCallback((newRating: number) => {
 		setRating(newRating);
-	};
+	}, []);
 
-	const handleSubmitReview = async (e: React.MouseEvent<HTMLButtonElement>) => {
+	const handleSubmitReview = useCallback(async (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		if (reviewText.trim() === '') {
 			setReviewError('Please enter a review');
@@ -44,23 +40,24 @@ export const Reviews: FC<ReviewsProps> = ({ className, productName }) => {
 			setErrorRating('Please rate');
 		} else {
 			try {
-				disptach(clearReviews())
-				console.log('после чистки:', storeReview);
-				console.log('user', user);
-
+				disptach(clearReviews());
 				const reviews = await addReview(reviewText, rating, user, productName);
-				console.log('reviews:', reviews.data.reviews);
-
-				//@ts-ignore
-				disptach(setReview(reviews.data.reviews));
+				disptach(setReview(reviews.reviews));
 				setReviewText('');
 				setRating(0);
 			} catch (error) {
 				console.error("Error while adding review:", error);
 			}
 		}
-	};
+	}, [reviewText, rating, user, productName, disptach]);
 
+	useEffect(() => {
+		const clearErrors = setTimeout(() => {
+			setReviewError('');
+			setErrorRating('');
+		}, 5000);
+		return () => clearTimeout(clearErrors);
+	}, [reviewError, errorRating]);
 
 	return (
 		<Row className={classNames(styles.Reviews)}>
