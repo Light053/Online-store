@@ -89,7 +89,7 @@ export const ProductsSlice = createSlice({
 			})
 			.addCase(fetchProducts.rejected, (state: StateTypes, action) => {
 				state.isLoading = false;
-				state.error = action.payload.toString();
+				state.error = action.error.message
 			});
 		builder.addCase(fetchProductsFromBasket.fulfilled, (state: StateTypes, action: PayloadAction<SmartphonesTypes[]>) => {
 			state.error = '';
@@ -102,7 +102,7 @@ export const ProductsSlice = createSlice({
 			})
 			.addCase(fetchProductsFromBasket.rejected, (state: StateTypes, action) => {
 				state.isLoading = false;
-				state.error = action.payload.toString();
+				state.error = action.error.message
 			});
 	}
 });
