@@ -11,7 +11,7 @@ class ProductService {
 				console.log('username', username);
 				throw new Error('User not found');
 			}
-
+			console.log(username);
 			const basket = await Basket.create({ user: user._id, username, items: [], totalPrice: 0 });
 			user.basket = basket._id;
 			await user.save();
@@ -197,11 +197,6 @@ class ProductService {
 			const user = await User.findOne({ username });
 			if (!user) {
 				throw new Error('User not found');
-			}
-
-			let basket = await Basket.findOne({ user: user._id });
-			if (!basket) {
-				basket = await this.createUserBasket(username);
 			}
 
 			const productIds = basket.items.map(item => item.itemId);

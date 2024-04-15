@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const TokenService = require('../service/TokenService')
 const UserDto = require('../dtos/UserDto');
 const ApiError = require('../exceptions/ApiError');
+const { createUserBasket } = require('./ProductService');
 
 class UserService {
 	async registration(username, password) {
@@ -17,7 +18,6 @@ class UserService {
 			const hashPassword = await bcrypt.hash(password, 5);
 
 			const basket = await Basket.create({ items: [], totalPrice: 0 });
-
 			const user = await User.create({ username, password: hashPassword, basket: basket._id, roles: 'ADMIN' });
 
 			const userDto = new UserDto(user);
@@ -26,6 +26,8 @@ class UserService {
 
 			await TokenService.saveToken(userDto.id, token.refreshToken);
 
+			const userBasket = createUserBasket(username)
+			console.log(userBasket);
 			return {
 				...token,
 				user: userDto,
