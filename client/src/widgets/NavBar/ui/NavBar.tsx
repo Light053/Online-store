@@ -19,7 +19,6 @@ interface NavBarProps {
 
 const NavBar: FC<NavBarProps> = ({ className }) => {
 	const isAuth = useAppSelector(state => state.user.isAuth);
-	//@ts-ignore
 	const username = useAppSelector(state => state.user.user.username?.username)
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
@@ -75,6 +74,7 @@ const NavBar: FC<NavBarProps> = ({ className }) => {
 							>
 								<Basket width={30} height={30} />
 							</MyButton>
+							<h4 className={styles.username}>{username}</h4>
 						</Nav>
 					) : (
 						<Nav className="ml-auto">

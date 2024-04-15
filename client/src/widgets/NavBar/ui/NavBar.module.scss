@@ -32,3 +32,11 @@
 	font-weight: 500;
 	margin-left: 10px;
 }
+
+.username{
+	padding: 10px;
+
+	&:hover {
+		text-decoration:underline;
+	}
+}
